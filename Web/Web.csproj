@@ -165,6 +165,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\TemplateController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -253,6 +254,9 @@
     <Content Include="Views\Home\Dashboard.cshtml" />
     <Content Include="Views\Home\Recall.cshtml" />
     <Content Include="Views\Home\Patients.cshtml" />
+    <Content Include="Views\Template\Index.cshtml" />
+    <Content Include="Views\Template\Edit.cshtml" />
+    <Content Include="Views\Template\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -267,6 +271,14 @@
     <ProjectReference Include="..\AspNet.Identity.Dapper\AspNet.Identity.Dapper.csproj">
       <Project>{37ecc44b-c00c-4781-aca5-7f02c1a092e7}</Project>
       <Name>AspNet.Identity.Dapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ClassLibrary1\PPOK_System.Domain.csproj">
+      <Project>{16f03d76-773c-4144-ac8c-b3028bb3f103}</Project>
+      <Name>PPOK_System.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Database.Member\Database.Member.sqlproj">
+      <Project>{5e7a0c5b-8ad3-41a4-a797-f4e574972e5f}</Project>
+      <Name>Database.Member</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
