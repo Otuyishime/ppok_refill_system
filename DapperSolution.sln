@@ -1,13 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Identity.Dapper", "AspNet.Identity.Dapper\AspNet.Identity.Dapper.csproj", "{37ECC44B-C00C-4781-ACA5-7F02C1A092E7}"
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Database.Member", "Database.Member\Database.Member.sqlproj", "{5E7A0C5B-8AD3-41A4-A797-F4E574972E5F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "Web\Web.csproj", "{9FD62280-F7C6-48BA-BA10-A0D6765E39CB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CSV Files", "CSV Files", "{35388103-A94B-4F38-BDEF-43EE08EAF807}"
+	ProjectSection(SolutionItems) = preProject
+		drugs.csv = drugs.csv
+		patients.csv = patients.csv
+		px.csv = px.csv
+		schedule.csv = schedule.csv
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
