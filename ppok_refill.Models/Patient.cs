@@ -1,11 +1,12 @@
-﻿using System;
+﻿using AspNet.Identity.Dapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
 namespace Web.Models
 {
-    public class Patient : User
+    public class Patient : IdentityMember
     {
         public Patient()
         {

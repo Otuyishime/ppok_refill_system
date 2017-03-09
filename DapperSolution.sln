@@ -13,6 +13,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PPOK_System.Test", "PPOK_Sy
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ppok_refill.Models", "ppok_refill.Models\ppok_refill.Models.csproj", "{DF11E790-D4EA-4830-8EAE-3BABAE9E369E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CSV files", "CSV files", "{A3609546-914F-47E7-8535-B6923507509D}"
+	ProjectSection(SolutionItems) = preProject
+		drugs.csv = drugs.csv
+		patients.csv = patients.csv
+		px.csv = px.csv
+		schedule.csv = schedule.csv
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
