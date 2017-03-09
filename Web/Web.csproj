@@ -272,13 +272,13 @@
       <Project>{37ecc44b-c00c-4781-aca5-7f02c1a092e7}</Project>
       <Name>AspNet.Identity.Dapper</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ClassLibrary1\PPOK_System.Domain.csproj">
-      <Project>{16f03d76-773c-4144-ac8c-b3028bb3f103}</Project>
-      <Name>PPOK_System.Domain</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Database.Member\Database.Member.sqlproj">
       <Project>{5e7a0c5b-8ad3-41a4-a797-f4e574972e5f}</Project>
       <Name>Database.Member</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ppok_refill.Models\ppok_refill.Models.csproj">
+      <Project>{df11e790-d4ea-4830-8eae-3babae9e369e}</Project>
+      <Name>ppok_refill.Models</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
