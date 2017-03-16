@@ -3,18 +3,29 @@
     ViewBag.Title = "Register";
 }
 
-<h2>@ViewBag.Title.</h2>
 
 @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
-    <h4>Create a new account.</h4>
+    <h2>Add a new pharmacist.</h2>
     <hr />
     @Html.ValidationSummary("", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+        </div>
+    </div>
     <div class="form-group">
         @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
             @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.PhoneNumber, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
         </div>
     </div>
     <div class="form-group">
@@ -46,17 +57,20 @@
             Select User Role
         </label>
         <div class="col-md-10">
-            @foreach (var item in (SelectList)ViewBag.RoleId)
+            @foreach (var item in (SelectList)ViewBag.Roles)
             {
-                <input type="radio" name="SelectedRoles"
-                       value="@item.Value" class="checkbox-inline" />
-                    @Html.Label(item.Value, new { @class = "control-label" })
+                <input type="radio" name="selectedRole"
+                       value="@item.Text" class="checkbox-inline" />
+                    @Html.Label(item.Text, new { @class = "control-label" })
+                @*@Html.RadioButtonFor(m => m.selectedRole, item.Value, new { @class="checkbox-inline"})
+                @Html.Label(item.Text, new { @class = "control-label" })*@
             }
         </div>
     </div>
     <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Register" />
+        <div class="col-md-offset-2 col-md-5">
+            <input type="submit" class="btn btn-default btn-sm" value="Register" />
+            @Html.ActionLink("Cancel", "Pharmacists", "Admin", null, new { @class = "btn btn-default btn-sm" })
         </div>
     </div>
 }

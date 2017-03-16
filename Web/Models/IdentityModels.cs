@@ -13,13 +13,6 @@ namespace Web.Models
     // You can add profile data for the AppMember by adding more properties to your AppMember class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class AppMember :   IdentityMember
     {
-        // Add Additional details
-        public DateTime DateBirth { get; set; }
-
-        public string Address { get; set; }
-
-        public bool Active { get; set; }
-
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<AppMember,int> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType

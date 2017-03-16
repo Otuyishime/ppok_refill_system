@@ -10,6 +10,7 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Web.Models;
 using AspNet.Identity.Dapper;
+using Web.Controllers;
 
 namespace Web
 {
@@ -48,9 +49,16 @@ namespace Web
             var manager = new ApplicationUserManager(
                 new UserStore<AppMember>(
                     context.Get<ApplicationDbContext>() as DbManager));
-            
+
             // Configure validation logic for usernames
-            manager.UserValidator = new UserValidator<AppMember,int>(manager)
+            //manager.UserValidator = new UserValidator<AppMember,int>(manager)
+            //{
+            //    AllowOnlyAlphanumericUserNames = false,
+            //    RequireUniqueEmail = true
+            //};
+
+            // Configure validation logic for passwords
+            manager.UserValidator = new customUserValidator<AppMember>(manager)
             {
                 AllowOnlyAlphanumericUserNames = false,
                 RequireUniqueEmail = true

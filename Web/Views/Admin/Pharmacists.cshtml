@@ -1,0 +1,36 @@
+﻿@model Web.Models.PharmacistsViewModel
+
+@{
+    ViewBag.Title = "Pharmacists";
+}
+
+<h3>Pharmacists</h3>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        @Html.ActionLink("Add a pharmacist", "Register", "Account", routeValues: null, htmlAttributes: new { @class = "btn btn-default btn-sm", id = "registerLink" })
+    </div>
+    <div class="col-md-3 col-md-offset-5">
+        <div class="input-group input-group-sm">
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="button">Search</button>
+            </span>
+            <input type="text" class="form-control" placeholder="Search for pharmacist">
+        </div>
+        @*@Html.ActionLink("Search", "", "", new { @class = "btn btn-default" })*@
+    </div>
+</div>
+<hr />
+
+<div class="row">
+    @foreach(var pharmacist in Model.Pharmacists)
+    {
+        {Html.RenderPartial("_PharmacistPartial", pharmacist);}
+    }
+</div>
+
+@section scripts
+{
+    <script src="~/Scripts/ppok-refill-system.js?Build=@Guid.NewGuid().ToString()"></script>
+}
+

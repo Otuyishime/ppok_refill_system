@@ -1,0 +1,64 @@
+﻿@model Web.Models.PharmacistViewModel
+
+<div class="col-md-4">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col-md-4"><p>Name:</p></div>
+                <div class="col-md-8"><p><strong>@Model.Name</strong></p></div>
+            </div>
+        </div>
+        <div class="panel-body">
+            @Html.HiddenFor(m => m.Id)
+            <div class="row">
+                <div class="col-md-4"><p>Birth date:</p></div>
+                <div class="col-md-8">
+                    <p>@Html.DisplayFor(m => m.DateBirth, "{0:yyyy-MM-dd}")</p>
+                </div>
+                <div class="col-md-4"><p>Email:</p></div>
+                <div class="col-md-8">
+                    @if (String.IsNullOrEmpty(Model.Email))
+                    {
+                        <p class="text-danger">No email to show</p>
+                    }
+                    else
+                    {
+                        <p>@Model.Email</p>
+                    }
+                </div>
+                <div class="col-md-4"><p>Phone:</p></div>
+                <div class="col-md-8">
+                    @if (String.IsNullOrEmpty(Model.PhoneNumber))
+                    {
+                        <p class="text-danger">No phone number to show</p>
+                    }
+                    else
+                    {
+                        <p>@Model.PhoneNumber</p>
+                    }
+                </div>
+                <div class="col-md-4"><p>Address:</p></div>
+                <div class="col-md-8">
+                    @if (String.IsNullOrEmpty(Model.Address))
+                    {
+                        <p class="text-danger">No address to show</p>
+                    }
+                    else
+                    {
+                        <p>@Model.Address</p>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <div class="row">
+                <div class="col-md-9">
+                    @Html.ActionLink("Edit Info", "#", null, new { @class = "btn btn-default btn-sm" })
+                </div>
+                <div class="col-md-3">
+                    @Html.ActionLink("Active", "#", null, new { @type = "checkbox", @id = "activate-toggle", @data_toggle = "toggle"})
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

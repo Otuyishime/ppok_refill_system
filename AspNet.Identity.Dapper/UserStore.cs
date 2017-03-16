@@ -629,7 +629,6 @@ namespace AspNet.Identity.Dapper
                     : new DateTimeOffset());
         }
 
-
         /// <summary>
         /// Set user lockout end date
         /// </summary>

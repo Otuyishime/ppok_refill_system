@@ -65,9 +65,23 @@ namespace AspNet.Identity.Dapper
                 .ToList();
         }
 
-        public List<TUser> GetUserByEmail(string email)
+        /// <summary>
+        /// Returns a list of TUser instances given a Member name
+        /// </summary>
+        /// <param name="userName">Member's name</param>
+        /// <returns></returns>
+        public List<TUser> GetUserByRole(string roleName)
         {
-            return null;
+            return db.Connection.Query<TUser>(@"select Id, Email, PhoneNumber, UserName, DateBirth, Address, Active from Member,
+                                                (select MemberRole.MemberId from MemberRole, Role
+                                                 where Role.Name = @roleName and Role.Id = MemberRole.RoleId) as M_id
+                                                 where Member.Id = M_id.MemberId", new { roleName = roleName }).ToList();
+        }
+
+        public TUser GetUserByEmail(string email)
+        {
+            return db.Connection.Query<TUser>("Select * from Member where Email=@Email", new { Email = email })
+                .FirstOrDefault();
         }
 
         /// <summary>
@@ -115,8 +129,8 @@ namespace AspNet.Identity.Dapper
         public void Insert(TUser member)
         {
            var id = db.Connection.ExecuteScalar<int>(@"Insert into Member
-                                    (UserName,  PasswordHash, SecurityStamp,Email,EmailConfirmed,PhoneNumber,PhoneNumberConfirmed, AccessFailedCount,LockoutEnabled,LockoutEndDateUtc,TwoFactorEnabled)
-                            values  (@name, @pwdHash, @SecStamp,@email,@emailconfirmed,@phonenumber,@phonenumberconfirmed,@accesscount,@lockoutenabled,@lockoutenddate,@twofactorenabled)
+                                    (UserName,  PasswordHash, SecurityStamp,Email,EmailConfirmed,PhoneNumber,PhoneNumberConfirmed, AccessFailedCount,LockoutEnabled,LockoutEndDateUtc,TwoFactorEnabled,DateBirth,Address,Active)
+                            values  (@name, @pwdHash, @SecStamp,@email,@emailconfirmed,@phonenumber,@phonenumberconfirmed,@accesscount,@lockoutenabled,@lockoutenddate,@twofactorenabled,@datebirth,@address,@active)
                             SELECT Cast(SCOPE_IDENTITY() as int)",
                              new {  
                                     name=member.UserName,
@@ -129,7 +143,10 @@ namespace AspNet.Identity.Dapper
                                     accesscount=member.AccessFailedCount,
                                     lockoutenabled=member.LockoutEnabled,
                                     lockoutenddate=member.LockoutEndDateUtc,
-                                    twofactorenabled=member.TwoFactorEnabled
+                                    twofactorenabled=member.TwoFactorEnabled,
+                                    datebirth=member.DateBirth,
+                                    address=member.Address,
+                                    active=member.Active
                              });
             // we need to set the id to the returned identity generated from the db
             member.Id = id;
@@ -166,7 +183,8 @@ namespace AspNet.Identity.Dapper
               .Execute(@"
                             Update Member set UserName = @userName, PasswordHash = @pswHash, SecurityStamp = @secStamp, 
                 Email=@email, EmailConfirmed=@emailconfirmed, PhoneNumber=@phonenumber, PhoneNumberConfirmed=@phonenumberconfirmed,
-                AccessFailedCount=@accesscount, LockoutEnabled=@lockoutenabled, LockoutEndDateUtc=@lockoutenddate, TwoFactorEnabled=@twofactorenabled  
+                AccessFailedCount=@accesscount, LockoutEnabled=@lockoutenabled, LockoutEndDateUtc=@lockoutenddate, 
+                TwoFactorEnabled=@twofactorenabled, DateBirth=@datebirth, Address=@address, Active=@active 
                 WHERE Id = @memberId",
                 new
                 {
@@ -181,7 +199,10 @@ namespace AspNet.Identity.Dapper
                     accesscount= member.AccessFailedCount,
                     lockoutenabled= member.LockoutEnabled,
                     lockoutenddate= member.LockoutEndDateUtc,
-                    twofactorenabled= member.TwoFactorEnabled
+                    twofactorenabled= member.TwoFactorEnabled,
+                    datebirth = member.DateBirth,
+                    address = member.Address,
+                    active = member.Active
                 }            
            );
         }

@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Web.Models;
 using AspNet.Identity.Dapper;
+using System.Collections.Generic;
 
 namespace Web.Controllers
 {
@@ -87,9 +88,16 @@ namespace Web.Controllers
                 return View(model);
             }
 
+            // find the user by email
+            var user = await UserManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                return View(model);
+            }
+
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            var result = await SignInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -153,21 +161,32 @@ namespace Web.Controllers
             }
         }
 
+        public async Task<SelectList> RetrieveRoles()
+        {
+            ApplicationDbContext context = ApplicationDbContext.Create();
+            var roletable = new RoleTable(context);
+            var roleList = new List<SelectListItem>();
+
+            var retrievedRoles = await Task.Run(
+                () => roletable.GetRoles().
+                Select(r => new { r.Id, r.Name }).
+                Where(r => r.Name.ToUpper() != "patient".ToUpper()));
+
+            foreach (var role in retrievedRoles)
+            {
+                var roleItem = new SelectListItem { Value = role.Id.ToString(), Text = role.Name };
+                roleList.Add(roleItem);
+            }
+
+            return new SelectList(roleList, "Value", "Text", 16);
+        }
+
         //
         // GET: /Account/Register
         [AllowAnonymous]
         public async Task<ActionResult> Register()
         {
-            ApplicationDbContext context = ApplicationDbContext.Create();
-            var roletable = new RoleTable(context);
-
-            ViewBag.RoleId = new SelectList(await Task.Run(
-                () => roletable.GetRoles().
-                Select(r => new { r.Id, r.Name }).
-                Where(r => r.Name.ToUpper() != "patient".ToUpper())),
-            "Name", "Name"
-            );
-
+            ViewBag.Roles = await RetrieveRoles();
             return View();
         }
 
@@ -180,24 +199,27 @@ namespace Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var AppMember = new AppMember { UserName = model.Email, Email = model.Email };
+                var AppMember = new AppMember { UserName = model.Name, PhoneNumber = model.PhoneNumber , Email = model.Email, DateBirth = model.DateBirth, Address = model.Address, Active = true };
                 var result = await UserManager.CreateAsync(AppMember, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(AppMember, isPersistent:false, rememberBrowser:false);
-                    
+                    // await SignInManager.SignInAsync(AppMember, isPersistent:false, rememberBrowser:false);
+
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(AppMember.Id);
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = AppMember.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(AppMember.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    //Add default User to Role Admin   
+                    var result1 = UserManager.AddToRole(AppMember.Id, model.selectedRole);
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Pharmacists", "Admin");
                 }
                 AddErrors(result);
             }
 
             // If we got this far, something failed, redisplay form
+            ViewBag.Roles = await RetrieveRoles();
             return View(model);
         }
 

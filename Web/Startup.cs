@@ -30,24 +30,26 @@ namespace Web
                 // first we create Admin rool   
                 var role = new IdentityRole();
                 role.Name = "Admin";
-                roleManager.Create(role);
-
-                //Here we create a Admin super user who will maintain the website                  
-
-                var user = new AppMember();
-                user.UserName = "olivier";
-                user.Email = "oliviertyishime@gmail.com";
-                user.DateBirth = new DateTime(1994, 10, 31);
-
-                string user_password = "Test_1";
-
-                var chkUser = userManager.Create(user, user_password);
-
-                //Add default User to Role Admin   
-                if (chkUser.Succeeded)
+                var chkRole = roleManager.Create(role);
+                if (chkRole.Succeeded)
                 {
-                    var result1 = userManager.AddToRole(user.Id, "Admin");
+                    //Here we create a Admin super user who will maintain the website                  
 
+                    var user = new AppMember();
+                    user.UserName = "admin";
+                    user.Email = "oliviertyishime@gmail.com";
+                    user.DateBirth = new DateTime(1994, 10, 31);
+
+                    string user_password = "Test_1";
+
+                    var chkUser = userManager.Create(user, user_password);
+
+                    //Add default User to Role Admin   
+                    if (chkUser.Succeeded)
+                    {
+                        var result1 = userManager.AddToRole(user.Id, "Admin");
+
+                    }
                 }
             }
 

@@ -19,13 +19,7 @@ namespace Web.Controllers
             return View();
         }
 
-        public ActionResult Contact()
-        {
-
-            return View();
-        }
-
-        public ActionResult Dashboard()
+        public ActionResult Patient()
         {
 
             return View();

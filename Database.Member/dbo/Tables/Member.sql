@@ -14,6 +14,7 @@
     [DateBirth] DATE NULL, 
     [Address] NVARCHAR(200) NULL, 
     [Active] BIT NULL, 
+    [Name] NVARCHAR(256) NOT NULL, 
     CONSTRAINT [PK_dbo.Member] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 

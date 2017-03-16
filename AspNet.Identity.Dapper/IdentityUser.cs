@@ -86,5 +86,20 @@ namespace AspNet.Identity.Dapper
         ///     Used to record failures for the purposes of lockout
         /// </summary>
         public virtual int AccessFailedCount { get; set; }
+
+        /// <summary>
+        ///     Used to record user's date of birth
+        /// </summary>
+        public DateTime DateBirth { get; set; }
+
+        /// <summary>
+        ///     Used to record user's address
+        /// </summary>
+        public string Address { get; set; }
+
+        /// <summary>
+        ///     Used to make user active or inactive
+        /// </summary>
+        public bool Active { get; set; }
     }
 }

@@ -66,6 +66,10 @@ namespace Web.Models
     public class RegisterViewModel
     {
         [Required]
+        [Display(Name = "Name")]
+        public string Name { get; set; }
+
+        [Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
@@ -85,7 +89,16 @@ namespace Web.Models
         [Display(Name = "Birth Date")]
         public DateTime DateBirth { get; set; }
 
+        [Required]
+        [Phone]
+        [Display(Name = "Phone Number")]
+        public string PhoneNumber { get; set; }
+
         public string Address { get; set; }
+
+        [Required(ErrorMessage = "Please select a role")]
+        [StringLength(12, MinimumLength = 5, ErrorMessage = "Please select a role")]
+        public string selectedRole { get; set; }
     }
 
     public class ResetPasswordViewModel
