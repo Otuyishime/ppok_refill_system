@@ -13,13 +13,7 @@
     [UserName]             NVARCHAR (256) NOT NULL,
     [DateBirth] DATE NULL, 
     [Address] NVARCHAR(200) NULL, 
-    [Active] BIT NULL, 
-    [Name] NVARCHAR(256) NOT NULL, 
+    [Active] BIT NULL,  
     CONSTRAINT [PK_dbo.Member] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
-
-
-GO
-CREATE UNIQUE NONCLUSTERED INDEX [MemberNameIndex]
-    ON [dbo].[Member]([UserName] ASC);
 

@@ -10,8 +10,10 @@ namespace Web.Models
     {
         public int Id { get; set; }
 
+        [Display(Name = "Active")]
         public bool Active { get; set; }
 
+        [Display(Name = "Address")]
         public string Address { get; set; }
 
         [Required]

@@ -1,3 +1,29 @@
 ﻿#login-page-totle {
     text-align:center;
 }
+
+#pharmacists-table_filter
+{
+    display:none;
+}
+
+#pharmacists-table tbody tr .td-active{
+    text-align:center;
+}
+
+#pharmacists-table thead tr .active{
+    text-align:center;
+}
+
+#pharmacists-table tbody tr .td-action{
+    text-align:center;
+}
+
+#pharmacists-table thead tr .action{
+    text-align:center;
+}
+
+#patients-table_filter
+{
+    display:none;
+}

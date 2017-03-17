@@ -1,7 +1,9 @@
 ﻿using AspNet.Identity.Dapper;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Web.Models;
@@ -98,17 +100,56 @@ namespace Web.Controllers
             return View();
         }
 
-        public ActionResult EditPharmacist(int id)
+        public async Task<ActionResult> EditPharmacist(int id)
         {
+            // initialize the view model
+            var pharmacist_model = new PharmacistViewModel();
 
-            return View();
+            // find the user by email
+            var user = await UserManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return new EmptyResult();
+            }
+
+            pharmacist_model.Name = user.UserName;
+            pharmacist_model.Email = user.Email;
+            pharmacist_model.DateBirth = user.DateBirth;
+            pharmacist_model.Address = user.Address;
+            pharmacist_model.Active = user.Active;
+            pharmacist_model.PhoneNumber = user.PhoneNumber;
+            pharmacist_model.Id = user.Id;
+
+            return View(pharmacist_model);
         }
 
         [HttpPost]
-        public ActionResult EditPharmacist(PharmacistViewModel model)
+        public async Task<ActionResult> EditPharmacist(PharmacistViewModel model)
         {
+            if (ModelState.IsValid)
+            {
+                var AppMember = new AppMember { UserName = model.Name, PhoneNumber = model.PhoneNumber,
+                    Email = model.Email, DateBirth = model.DateBirth, Address = model.Address,
+                    Active = model.Active, Id = model.Id};
+                var userStore = new UserStore<AppMember>(Context);
+                await userStore.UpdateAsync(AppMember);
 
-            return View();
+                return RedirectToAction("Pharmacists", "Admin");
+                
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
         }
+
+        #region Helpers
+        private void AddErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error);
+            }
+        }
+        #endregion
     }
 }

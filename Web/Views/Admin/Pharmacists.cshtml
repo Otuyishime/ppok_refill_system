@@ -15,22 +15,50 @@
             <span class="input-group-btn">
                 <button class="btn btn-default" type="button">Search</button>
             </span>
-            <input type="text" class="form-control" placeholder="Search for pharmacist">
+            <input type="text" class="form-control" placeholder="Search for pharmacist"  id="textSearch"/>
         </div>
-        @*@Html.ActionLink("Search", "", "", new { @class = "btn btn-default" })*@
     </div>
 </div>
 <hr />
 
-<div class="row">
-    @foreach(var pharmacist in Model.Pharmacists)
-    {
-        {Html.RenderPartial("_PharmacistPartial", pharmacist);}
-    }
-</div>
+<link href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" rel="stylesheet" />
+<table id="pharmacists-table" class="table dt-responsive wrap" cellspacing="3">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone number</th>
+            <th>Birth date</th>
+            <th>Address</th>
+            <th class="active">Active</th>
+            <th class="action">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var pharmacist in Model.Pharmacists)
+        {
+            { Html.RenderPartial("_PharmacistPartial", pharmacist); }
+        }
+    </tbody>
+</table>
 
 @section scripts
 {
     <script src="~/Scripts/ppok-refill-system.js?Build=@Guid.NewGuid().ToString()"></script>
+    <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            
+            var oTable = $('#pharmacists-table').DataTable({
+                paging: false,
+                "columnDefs": [{ "orderable": false, "targets": ['active', 'action'] }]
+            });
+            $('#textSearch').keyup(function ()
+                {
+                    oTable.search($(this).val()).draw();
+                }
+            );
+        });
+    </script>
 }
 

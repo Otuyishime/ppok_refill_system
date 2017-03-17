@@ -98,6 +98,7 @@ namespace Web.Models
 
         [Required(ErrorMessage = "Please select a role")]
         [StringLength(12, MinimumLength = 5, ErrorMessage = "Please select a role")]
+        [Display(Name = "Select Role")]
         public string selectedRole { get; set; }
     }
 

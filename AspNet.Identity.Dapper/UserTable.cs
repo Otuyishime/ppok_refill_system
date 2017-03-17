@@ -179,30 +179,21 @@ namespace AspNet.Identity.Dapper
         /// <returns></returns>
         public void Update(TUser member)
         {
+            int int_active = member.Active ? 1 : 0;
             db.Connection
-              .Execute(@"
-                            Update Member set UserName = @userName, PasswordHash = @pswHash, SecurityStamp = @secStamp, 
-                Email=@email, EmailConfirmed=@emailconfirmed, PhoneNumber=@phonenumber, PhoneNumberConfirmed=@phonenumberconfirmed,
-                AccessFailedCount=@accesscount, LockoutEnabled=@lockoutenabled, LockoutEndDateUtc=@lockoutenddate, 
-                TwoFactorEnabled=@twofactorenabled, DateBirth=@datebirth, Address=@address, Active=@active 
+              .Execute(@"Update Member set UserName = @userName, 
+                Email=@email, PhoneNumber=@phonenumber,
+                DateBirth=@datebirth, Address=@address, Active=@active 
                 WHERE Id = @memberId",
                 new
                 {
-                    userName= member.UserName,
-                    pswHash= member.PasswordHash,
-                    secStamp= member.SecurityStamp,
-                    memberId= member.Id,
-                    email= member.Email,
-                    emailconfirmed= member.EmailConfirmed,
-                    phonenumber= member.PhoneNumber,
-                    phonenumberconfirmed= member.PhoneNumberConfirmed,
-                    accesscount= member.AccessFailedCount,
-                    lockoutenabled= member.LockoutEnabled,
-                    lockoutenddate= member.LockoutEndDateUtc,
-                    twofactorenabled= member.TwoFactorEnabled,
+                    userName = member.UserName,
+                    memberId = member.Id,
+                    email = member.Email,
+                    phonenumber = member.PhoneNumber,
                     datebirth = member.DateBirth,
                     address = member.Address,
-                    active = member.Active
+                    active = int_active
                 }            
            );
         }

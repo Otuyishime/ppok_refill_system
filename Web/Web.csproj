@@ -257,6 +257,7 @@
     <Content Include="Views\Home\Patient.cshtml" />
     <Content Include="Views\Admin\Templates.cshtml" />
     <Content Include="Views\Admin\_PharmacistPartial.cshtml" />
+    <Content Include="Views\Admin\EditPharmacist.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

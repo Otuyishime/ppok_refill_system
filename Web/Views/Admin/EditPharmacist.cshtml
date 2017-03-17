@@ -1,13 +1,12 @@
-﻿@model Web.Models.RegisterViewModel
+﻿@model Web.Models.PharmacistViewModel
+
 @{
-    ViewBag.Title = "Register";
+    ViewBag.Title = "EditPharmacist";
 }
-
-
-@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+@using (Html.BeginForm("EditPharmacist", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
-    <h2>Add a new pharmacist.</h2>
+    <h3>Edit pharmacist info</h3>
     <hr />
     @Html.ValidationSummary("", new { @class = "text-danger" })
     <div class="form-group">
@@ -29,18 +28,6 @@
         </div>
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
         @Html.LabelFor(m => m.DateBirth, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
             @Html.TextBoxFor(m => m.DateBirth, "{0:yyyy-MM-dd}", new { @class = "form-control", @type = "date" })
@@ -52,19 +39,29 @@
             @Html.TextBoxFor(m => m.Address, new { @class = "form-control" })
         </div>
     </div>
+    
     <div class="form-group">
-        @Html.LabelFor(m => m.selectedRole, new { @class = "col-md-2 control-label" })
+        @Html.LabelFor(m => m.Active, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @foreach (var item in (SelectList)ViewBag.Roles)
-            {
-                <input type="radio" name="selectedRole" value="@item.Text" class="checkbox-inline" />
-                @Html.Label(item.Text, new { @class = "control-label" })
-            }
+
+            @Html.DropDownListFor(
+           model => model.Active,
+           new SelectList(
+                  new List<Object>{
+                       new { value = false , text = "No"  },
+                       new { value = true , text = "Yes" }
+                    },
+                  "value",
+                  "text",
+                   Model.Active
+           ), new { @class = "form-control" }
+        )
         </div>
     </div>
+
     <div class="form-group">
         <div class="col-md-offset-2 col-md-5">
-            <input type="submit" class="btn btn-default btn-sm" value="Register" />
+            <input type="submit" class="btn btn-default btn-sm" value="Save info" />
             @Html.ActionLink("Cancel", "Pharmacists", "Admin", null, new { @class = "btn btn-default btn-sm" })
         </div>
     </div>
