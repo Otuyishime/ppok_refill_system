@@ -43,6 +43,12 @@ namespace AspNet.Identity.Dapper
             _conn = new SqlConnection(connString);
         }
 
+        public DbManager()
+        {
+            string connString = ConfigurationManager.ConnectionStrings[0].Name;
+            _conn = new SqlConnection(connString);
+        }
+
         /// <summary>
         /// Close and dispose of the database connection
         /// </summary>

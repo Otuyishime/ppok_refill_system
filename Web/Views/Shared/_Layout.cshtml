@@ -25,6 +25,7 @@
                     <li>@Html.ActionLink("Recall", "Recall", "Home")</li>
                     <li>@Html.ActionLink("Pharmacists", "Pharmacists", "Admin")</li>
                     <li>@Html.ActionLink("Templates", "Templates", "Admin")</li>
+                    <li>@Html.ActionLink("Import", "Index", "Import")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
@@ -34,7 +35,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - Anonymous.priv</p>
+            <p>&copy; @DateTime.Now.Year - The Anonymous Team</p>
         </footer>
     </div>
 

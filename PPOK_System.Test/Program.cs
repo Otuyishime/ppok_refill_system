@@ -11,7 +11,9 @@ namespace PPOK_System.Test
     {
         static void Main(string[] args)
         {
-            
+            Console.WriteLine("Hello World!!!!");
+            MedicationDBManager test = new MedicationDBManager();
+            Console.WriteLine(test.exists("MYI"));
         }
     }
 }

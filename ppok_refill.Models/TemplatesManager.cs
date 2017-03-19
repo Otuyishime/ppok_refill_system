@@ -12,6 +12,7 @@ namespace AspNet.Identity.Dapper
 {
     public class TemplatesManager
     {
+        /*
         private DbManager db;
 
         TemplatesManager(DbManager database)
@@ -63,6 +64,6 @@ namespace AspNet.Identity.Dapper
                 "Temp_Message = @Temp_Message " + " WHERE " + "Id = @Id", template);
             
         }
-
+        */
     }
 }

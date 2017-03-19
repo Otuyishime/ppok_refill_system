@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Web.Models
 {
-    public class Patient : IdentityMember
+    public class Patient
     {
         public Patient()
         {

@@ -22,3 +22,23 @@ select,
 textarea {
     max-width: 280px;
 }
+
+/* this section is for the import page */
+.import .submit-button {
+    width: 25%;
+}
+.import .import-element {
+    margin-top: 20px;
+}
+.import .import-error-message {
+    color: #b81e0d;
+}
+
+.import .import-error-message ul {
+    list-style-type: none;
+    padding-left: 0px;
+}
+
+.import .import-error-message ul li {
+    padding-left: 0px;
+}
