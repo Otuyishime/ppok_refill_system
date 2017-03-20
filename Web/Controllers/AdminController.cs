@@ -94,12 +94,6 @@ namespace Web.Controllers
             return View(pharmacistsModel);
         }
 
-        public ActionResult Templates()
-        {
-
-            return View();
-        }
-
         public async Task<ActionResult> EditPharmacist(int id)
         {
             // initialize the view model
@@ -141,6 +135,14 @@ namespace Web.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
+
+        public ActionResult Templates()
+        {
+
+            return View();
+        }
+
+
 
         #region Helpers
         private void AddErrors(IdentityResult result)

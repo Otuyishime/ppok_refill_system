@@ -2,28 +2,29 @@
     text-align:center;
 }
 
-#pharmacists-table_filter
+#pharmacists-table_filter, 
+#patients-table_filter, 
+#pending-refills-table_filter, 
+#daily-refills-table_filter
 {
     display:none;
 }
 
-#pharmacists-table tbody tr .td-active{
-    text-align:center;
-}
-
-#pharmacists-table thead tr .active{
-    text-align:center;
-}
-
-#pharmacists-table tbody tr .td-action{
-    text-align:center;
-}
-
-#pharmacists-table thead tr .action{
-    text-align:center;
-}
-
-#patients-table_filter
+#pharmacists-table tbody tr .td-active, 
+#pharmacists-table thead tr .active, 
+#pharmacists-table tbody tr .td-action, 
+#pharmacists-table thead tr .action,
+#birthday-tab-message-table thead .th-message-template 
 {
-    display:none;
+    text-align:center;
+}
+
+.home-table-checkbox{
+    text-align:left;
+}
+
+
+textarea {
+    max-width: initial;
+    min-height: 200px;
 }

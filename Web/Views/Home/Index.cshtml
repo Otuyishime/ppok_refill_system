@@ -2,4 +2,214 @@
     ViewBag.Title = "Home Page";
 }
 
-<h3>Home</h3>
+<link href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" rel="stylesheet" />
+<div class="row">
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading" style="background-color:orangered">
+                <h3 style="color:white">30</h3>
+                <p>Today's refills</p>
+            </div>
+            <div class="panel-footer">
+                @Html.ActionLink("More info", "Register", "Account", routeValues: null, htmlAttributes: new { @class = "btn btn-default btn-sm", id = "registerLink" })
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading" style="background-color:dodgerblue">
+                <h3 style="color:white">5</h3>
+                <p>Pending refills</p>
+            </div>
+            <div class="panel-footer">
+                @Html.ActionLink("More info", "Register", "Account", routeValues: null, htmlAttributes: new { @class = "btn btn-default btn-sm", id = "registerLink" })
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading" style="background-color:olive">
+                <h3 style="color:white">120</h3>
+                <p>Patients in the system</p>
+            </div>
+            <div class="panel-footer">
+                @Html.ActionLink("More info", "Patients", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-default btn-sm"})
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading" style="background-color:yellowgreen">
+                <h3 style="color:white">45</h3>
+                <p>Medecines in the system</p>
+            </div>
+            <div class="panel-footer">
+                @Html.ActionLink("More info", "Register", "Account", routeValues: null, htmlAttributes: new { @class = "btn btn-default btn-sm", id = "registerLink" })
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <p>
+                    <strong>Today's refills</strong>
+                </p>
+            </div>
+            <div class="panel-body">
+                <p>
+                    <span class="pull-left">
+                        @Html.ActionLink("Send messages", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-info btn-sm" })
+                    </span>
+                    <span class="pull-right">
+                        <input type="text" class="form-control input-sm" placeholder="Search patient" id="daily_refills_table_Search" style="border-bottom-color:black" />
+                    </span>                
+                </p>
+            </div>
+            <div class="panel-footer">
+                <table id="daily-refills-table" class="table dt-responsive wrap" cellspacing="3">
+                    <thead>
+                        <tr>
+                            <th class="action">
+                                <input type="checkbox" name="All" class="home-table-checkbox" />
+                            </th>
+                            <th>Name</th>
+                            <th>Medecine</th>
+                            <th class="action">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="checkbox" value=""></td>
+                            <td>Senna Chang</td>
+                            <td>Regional Director</td>
+                            <td>@Html.ActionLink("Check patient info", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-default btn-sm" })</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" value=""></td>
+                            <td>Jennifer Chang</td>
+                            <td>Regional Director</td>
+                            <td>@Html.ActionLink("Check patient info", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-default btn-sm" })</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" value=""></td>
+                            <td>Jennifer Chang</td>
+                            <td>Regional Director</td>
+                            <td>@Html.ActionLink("Check patient info", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-default btn-sm" })</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" value=""></td>
+                            <td>Jennifer Chang</td>
+                            <td>Regional Director</td>
+                            <td>@Html.ActionLink("Check patient info", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-default btn-sm" })</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" value=""></td>
+                            <td>Jennifer Chang</td>
+                            <td>Regional Director</td>
+                            <td>@Html.ActionLink("Check patient info", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-default btn-sm" })</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <p>
+                    <strong>Pending refills</strong>
+                </p>
+            </div>
+            <div class="panel-body">
+                <p>
+                    <span class="pull-left">
+                            @Html.ActionLink("Send messages", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-success btn-sm" })
+                    </span>
+                    <span class="pull-right">
+                        <input type="text" class="form-control input-sm" placeholder="Search patient" id="pending_refills_table_Search" style="border-bottom-color:black" />
+                    </span>
+                </p>
+            </div>
+            <div class="panel-footer">
+                <table id="pending-refills-table" class="table dt-responsive wrap" cellspacing="3">
+                    <thead>
+                        <tr>
+                            <th class="action">
+                                <input type="checkbox" value="" class="home-table-checkbox" />
+                            </th>
+                            <th>Name</th>
+                            <th>Medecine</th>
+                            <th class="action">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="checkbox" value=""></td>
+                            <td>Tenna Chang</td>
+                            <td>Regional Director</td>
+                            <td>@Html.ActionLink("Check patient info", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-default btn-sm" })</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" value=""></td>
+                            <td>Jennifer Chang</td>
+                            <td>Regional Director</td>
+                            <td>@Html.ActionLink("Check patient info", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-default btn-sm" })</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" value=""></td>
+                            <td>Jennifer Chang</td>
+                            <td>Regional Director</td>
+                            <td>@Html.ActionLink("Check patient info", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-default btn-sm" })</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" value=""></td>
+                            <td>Jennifer Chang</td>
+                            <td>Regional Director</td>
+                            <td>@Html.ActionLink("Check patient info", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-default btn-sm" })</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" value=""></td>
+                            <td>Jennifer Chang</td>
+                            <td>Regional Director</td>
+                            <td>@Html.ActionLink("Check patient info", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-default btn-sm" })</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script src="~/Scripts/ppok-refill-system.js?Build=@Guid.NewGuid().ToString()"></script>
+    <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            var daily_refills_Table = $('#daily-refills-table').DataTable({
+                paging: false,
+                "columnDefs": [{ "orderable": false, "targets": ['active', 'action'] }]
+            });
+
+            var pending_refills_Table = $('#pending-refills-table').DataTable({
+                paging: false,
+                "columnDefs": [{ "orderable": false, "targets": ['active', 'action'] }]
+            });
+
+            $('#daily_refills_table_Search').keyup(function ()
+                {
+                daily_refills_Table.search($(this).val()).draw();
+                }
+            );
+
+            $('#pending_refills_table_Search').keyup(function () {
+                pending_refills_Table.search($(this).val()).draw();
+            }
+            );
+        });
+    </script>
+}

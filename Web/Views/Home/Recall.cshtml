@@ -3,5 +3,15 @@
     ViewBag.Title = "Recall";
 }
 
-<h2>Recall</h2>
+<h3>Recalls</h3>
+<hr />
+<div class="row">
+    <div class="col-md-2">
+        @Html.ActionLink("Upload recall file", "Register", "Account", routeValues: null, htmlAttributes: new { @class = "btn btn-default btn-sm", id = "registerLink" })
+    </div>
+    <div class="col-md-2 col-md-offset-8">
+        @Html.ActionLink("Send recall message", "Register", "Account", routeValues: null, htmlAttributes: new { @class = "btn btn-default btn-sm pull-left", id = "registerLink" })
+    </div>
+</div>
+<hr />
 
