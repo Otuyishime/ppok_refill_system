@@ -9,23 +9,8 @@ namespace Web.Models
 {
     public class Medication
     {
-        public Medication()
-        {
-            Id = null;
-            Name = null;
-            Desc = null;
-        }
-
-        [DisplayName("NDC UPC HRI")]
-        public int? Id { get; set; }
-        [DisplayName("GPI Generic Name")]
-        public string Name { get; set; }
-        [DisplayName("Description")]
-        public string Desc { get; set; }
-
-        public override string ToString()
-        {
-            return $"{nameof(Id)}: {Id}, {nameof(Name)}: {Name}, {nameof(Desc)}: {Desc}";
-        }
+        public string Id { get; set; }
+        public string Med_Name { get; set; }
+        public string Med_Description { get; set; }
     }
 }

@@ -56,12 +56,6 @@
     <Compile Include="TemplateType.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AspNet.Identity.Dapper\AspNet.Identity.Dapper.csproj">
-      <Project>{37ecc44b-c00c-4781-aca5-7f02c1a092e7}</Project>
-      <Name>AspNet.Identity.Dapper</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
