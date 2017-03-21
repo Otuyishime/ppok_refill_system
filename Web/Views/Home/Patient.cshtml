@@ -1,7 +1,39 @@
-﻿
-@{
-    ViewBag.Title = "Patient";
-}
+﻿@model Web.Models.PatientViewModel
 
-<h2>Patient</h2>
+<tr>
+    @Html.HiddenFor(m => m.Id)
+    <td><strong>@Model.Name.ToLower()</strong></td>
+    <td>
+        @if (String.IsNullOrEmpty(Model.Email))
+        {
+            <label class="text-danger">No email to show</label>
+        }
+        else
+        {
+            @Model.Email.ToLower()
+        }
+    </td>
+    <td>
+        @if (String.IsNullOrEmpty(Model.PhoneNumber))
+        {
+            <label class="text-danger">No phone number to show</label>
+        }
+        else
+        {
+            @Model.PhoneNumber
+        }
+    </td>
+    <td>@Html.DisplayFor(m => m.DateBirth, "{0:yyyy-MM-dd}")</td>
+    <td>
+        @if (String.IsNullOrEmpty(Model.Address))
+        {
+            <label class="text-danger">No address to show</label>
+        }
+        else
+        {
+            @Model.Address
+        }
+    </td>
+    <td class="td-action">@Html.ActionLink("Edit patient info", "EditPatient", "Home", routeValues: new { id = Model.Id }, htmlAttributes: new { @class = "btn btn-default btn-sm" })</td>
+</tr>
 

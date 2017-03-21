@@ -13,12 +13,17 @@ namespace AspNet.Identity.Dapper
 {
     public class PrescriptionDBManager
     {
-        // DbManager dbManager = new DbManager();
-        // string connectionString = ConfigurationManager.ConnectionStrings[0].Name;
+        private DbManager dbManager;
+        //string connectionString = ConfigurationManager.ConnectionStrings[0].Name;
         string connectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog=ppok_refill_system;Integrated Security=True";
 
         public PrescriptionDBManager ()
         {
+        }
+
+        public PrescriptionDBManager(DbManager database)
+        {
+            dbManager = database;
         }
 
         public List<Prescription> getPrescriptions()
@@ -39,7 +44,6 @@ namespace AspNet.Identity.Dapper
                 connection.Open();
                 string sql = "INSERT INTO Prescription VALUES (@User_Id, @Medication_Id, @Refills_Left, @Days_Supply, @Last_Date_Filled); SELECT CAST(SCOPE_IDENTITY() as int);";
                 int id = connection.Query<int>(sql, prescription).Single();
-                connection.Close();
                 return id;
             }
         }

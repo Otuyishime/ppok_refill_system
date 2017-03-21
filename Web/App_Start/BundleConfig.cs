@@ -24,8 +24,8 @@ namespace Web
                       "~/Scripts/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap-simplex.min.css",
                       "~/Content/site.css",
+                      "~/Content/bootstrap-simplex.css",
                       "~/Content/ppok-refill-system.css"));
 
             // Set EnableOptimizations to false for debugging. For more information,

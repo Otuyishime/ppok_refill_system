@@ -10,6 +10,7 @@ using Web.Models;
 
 namespace Web.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private ApplicationUserManager _userManager;

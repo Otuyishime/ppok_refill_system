@@ -4,7 +4,7 @@
 }
 
 <div class="import">
-    <h2>Imports Managements</h2>
+    <h3>Imports Managements</h3>
     <hr />
 
     @using (Html.BeginForm("Upload", "Import", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
@@ -13,29 +13,29 @@
 
         <div class="row">
             <div class="col-md-6 new-import">
-                <h2>New Import</h2>
+                <h3>New Import</h3>
                 <div class="form-group">
                     <label class="import-element" for="import-type">Choose import type</label>
-                    <select class="form-control" id="import-type">
+                    <select class="form-control input-sm" id="import-type">
                         <option>Daily</option>
                         <option>Weekly</option>
                         <option>Monthly</option>
                         <option>Yearly</option>
                     </select>
                     <label class="import-element" for="browse">Browse A File From You Computer</label>
-                    <input class="form-control" type="file" id="dataFile" name="upload" />
+                    <input class="form-control input-sm" type="file" id="dataFile" name="upload" />
                     <div class="import-error-message import-element">
                         @Html.ValidationSummary(true)
                     </div>
 
                     <div class="submit-button">
-                        <input class="form-control btn btn-default" type="submit" value="Upload" />
+                        <input class="form-control btn btn-default input-sm btn-sm" type="submit" value="Upload" />
                     </div>
                 </div>
             </div>
 
             <div class="col-md-6 old-import">
-                <h2>List of Previous Imports</h2>
+                <h3>List of Previous Imports</h3>
 
                 Listing....
             </div>

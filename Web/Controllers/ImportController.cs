@@ -13,11 +13,13 @@ using AspNet.Identity.Dapper;
 
 namespace Web.Controllers
 {
+    [Authorize(Roles = "Admin, Pharmacist")]
     public class ImportController : Controller
     {
 
         private ApplicationUserManager _userManager;
         private RoleManager<IdentityRole, int> _userRoleManager;
+        private ApplicationDbContext _context;
 
         public ApplicationUserManager UserManager
         {
@@ -41,6 +43,18 @@ namespace Web.Controllers
             private set
             {
                 _userRoleManager = value;
+            }
+        }
+
+        public ApplicationDbContext Context
+        {
+            get
+            {
+                return _context ?? ApplicationDbContext.Create();
+            }
+            set
+            {
+                _context = value;
             }
         }
 

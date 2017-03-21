@@ -39,6 +39,7 @@ namespace Web
                     user.UserName = "admin";
                     user.Email = "oliviertyishime@gmail.com";
                     user.DateBirth = new DateTime(1994, 10, 31);
+                    user.Active = true;
 
                     string user_password = "Test_1";
 

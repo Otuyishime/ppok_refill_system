@@ -1,13 +1,15 @@
-﻿@{
+﻿@model Web.Models.SystemSummaryViewModel
+
+@{
     ViewBag.Title = "Home Page";
 }
 
 <link href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" rel="stylesheet" />
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-4">
         <div class="panel panel-default">
             <div class="panel-heading" style="background-color:orangered">
-                <h3 style="color:white">30</h3>
+                <h3 style="color:white">@Model.Due_Refills.Refills.Count()</h3>
                 <p>Today's refills</p>
             </div>
             <div class="panel-footer">
@@ -15,10 +17,10 @@
             </div>
         </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-4">
         <div class="panel panel-default">
             <div class="panel-heading" style="background-color:dodgerblue">
-                <h3 style="color:white">5</h3>
+                <h3 style="color:white">@Model.Pending_Refills.Refills.Count()</h3>
                 <p>Pending refills</p>
             </div>
             <div class="panel-footer">
@@ -26,25 +28,14 @@
             </div>
         </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-4">
         <div class="panel panel-default">
             <div class="panel-heading" style="background-color:olive">
-                <h3 style="color:white">120</h3>
+                <h3 style="color:white">@Model.number_patients</h3>
                 <p>Patients in the system</p>
             </div>
             <div class="panel-footer">
                 @Html.ActionLink("More info", "Patients", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-default btn-sm"})
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="panel panel-default">
-            <div class="panel-heading" style="background-color:yellowgreen">
-                <h3 style="color:white">45</h3>
-                <p>Medecines in the system</p>
-            </div>
-            <div class="panel-footer">
-                @Html.ActionLink("More info", "Register", "Account", routeValues: null, htmlAttributes: new { @class = "btn btn-default btn-sm", id = "registerLink" })
             </div>
         </div>
     </div>
@@ -69,6 +60,12 @@
                 </p>
             </div>
             <div class="panel-footer">
+                @if (Model.Due_Refills.Refills.Count() == 0)
+                {
+                    <p>No due refills ...</p>
+                }
+                else
+                {
                 <table id="daily-refills-table" class="table dt-responsive wrap" cellspacing="3">
                     <thead>
                         <tr>
@@ -81,38 +78,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><input type="checkbox" value=""></td>
-                            <td>Senna Chang</td>
-                            <td>Regional Director</td>
-                            <td>@Html.ActionLink("Check patient info", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-default btn-sm" })</td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox" value=""></td>
-                            <td>Jennifer Chang</td>
-                            <td>Regional Director</td>
-                            <td>@Html.ActionLink("Check patient info", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-default btn-sm" })</td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox" value=""></td>
-                            <td>Jennifer Chang</td>
-                            <td>Regional Director</td>
-                            <td>@Html.ActionLink("Check patient info", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-default btn-sm" })</td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox" value=""></td>
-                            <td>Jennifer Chang</td>
-                            <td>Regional Director</td>
-                            <td>@Html.ActionLink("Check patient info", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-default btn-sm" })</td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox" value=""></td>
-                            <td>Jennifer Chang</td>
-                            <td>Regional Director</td>
-                            <td>@Html.ActionLink("Check patient info", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-default btn-sm" })</td>
-                        </tr>
+                        @foreach (var refill in Model.Due_Refills.Refills)
+                        {
+                            { Html.RenderPartial("_RefillLinePartialView", refill); }
+                        }
                     </tbody>
                 </table>
+                }
             </div>
         </div>
     </div>
@@ -134,6 +106,12 @@
                 </p>
             </div>
             <div class="panel-footer">
+                @if (Model.Pending_Refills.Refills.Count() == 0)
+                {
+                    <p>No pending refills ...</p>
+                }
+                else
+                {
                 <table id="pending-refills-table" class="table dt-responsive wrap" cellspacing="3">
                     <thead>
                         <tr>
@@ -146,38 +124,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><input type="checkbox" value=""></td>
-                            <td>Tenna Chang</td>
-                            <td>Regional Director</td>
-                            <td>@Html.ActionLink("Check patient info", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-default btn-sm" })</td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox" value=""></td>
-                            <td>Jennifer Chang</td>
-                            <td>Regional Director</td>
-                            <td>@Html.ActionLink("Check patient info", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-default btn-sm" })</td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox" value=""></td>
-                            <td>Jennifer Chang</td>
-                            <td>Regional Director</td>
-                            <td>@Html.ActionLink("Check patient info", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-default btn-sm" })</td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox" value=""></td>
-                            <td>Jennifer Chang</td>
-                            <td>Regional Director</td>
-                            <td>@Html.ActionLink("Check patient info", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-default btn-sm" })</td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox" value=""></td>
-                            <td>Jennifer Chang</td>
-                            <td>Regional Director</td>
-                            <td>@Html.ActionLink("Check patient info", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-default btn-sm" })</td>
-                        </tr>
+                        @foreach (var refill in Model.Pending_Refills.Refills)
+                        {
+                            { Html.RenderPartial("_RefillLinePartialView", refill); }
+                        }
                     </tbody>
                 </table>
+                }
             </div>
         </div>
     </div>
@@ -191,7 +144,7 @@
         $(document).ready(function () {
 
             var daily_refills_Table = $('#daily-refills-table').DataTable({
-                paging: false,
+                paging: true,
                 "columnDefs": [{ "orderable": false, "targets": ['active', 'action'] }]
             });
 

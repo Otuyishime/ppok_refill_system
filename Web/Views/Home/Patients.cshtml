@@ -1,4 +1,5 @@
-﻿
+﻿@model Web.Models.PatientsViewModel
+
 @{
     ViewBag.Title = "Patients";
 }
@@ -32,46 +33,10 @@
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>Jennifer Chang</td>
-            <td>Regional Director</td>
-            <td>000-000-0000</td>
-            <td>2011/06/02</td>
-            <td>2501 East Memorial Road</td>
-            <td>@Html.ActionLink("Edit patient info", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-default btn-sm" })</td>
-        </tr>
-        <tr>
-            <td>Brenden Wagner</td>
-            <td>Software Engineer</td>
-            <td>000-000-0000</td>
-            <td>2011/06/02</td>
-            <td>2501 East Memorial Road</td>
-            <td>@Html.ActionLink("Edit patient info", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-default btn-sm" })</td>
-        </tr>
-        <tr>
-            <td>Fiona Green</td>
-            <td>Chief Operating Officer (COO)</td>
-            <td>000-000-0000</td>
-            <td>2011/06/02</td>
-            <td>2501 East Memorial Road</td>
-            <td>@Html.ActionLink("Edit patient info", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-default btn-sm" })</td>
-        </tr>
-        <tr>
-            <td>Shou Itou</td>
-            <td>Regional Marketing</td>
-            <td>000-000-0000</td>
-            <td>2011/06/02</td>
-            <td>2501 East Memorial Road</td>
-            <td>@Html.ActionLink("Edit patient info", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-default btn-sm" })</td>
-        </tr>
-        <tr>
-            <td>Michelle House</td>
-            <td>Integration Specialist</td>
-            <td>000-000-0000</td>
-            <td>2011/06/02</td>
-            <td>2501 East Memorial Road</td>
-            <td>@Html.ActionLink("Edit patient info", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-default btn-sm" })</td>
-        </tr>
+        @foreach (var patient in Model.Patients)
+        {
+            { Html.RenderPartial("Patient", patient); }
+        }
     </tbody>
 </table>
 
@@ -83,7 +48,6 @@
         $(document).ready(function () {
 
             var oTable = $('#patients-table').DataTable({
-                paging: false,
                 "columnDefs": [{ "orderable": false, "targets": ['active', 'action'] }]
             });
             $('#textSearch').keyup(function ()

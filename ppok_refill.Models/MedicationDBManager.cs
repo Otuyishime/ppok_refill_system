@@ -13,12 +13,18 @@ namespace AspNet.Identity.Dapper
 {
     public class MedicationDBManager
     {
-        // DbManager dbManager = new DbManager();
+        DbManager dbManager;
 
         // string connectionString = ConfigurationManager.ConnectionStrings[0].Name;
         string connectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog=ppok_refill_system;Integrated Security=True";
+
         public MedicationDBManager()
         {
+        }
+
+        public MedicationDBManager(DbManager database)
+        {
+            dbManager = database;
         }
 
         public List<Medication> getMedications()
@@ -38,7 +44,6 @@ namespace AspNet.Identity.Dapper
                 connection.Open();
                 string sql = "INSERT INTO Medication VALUES(@Id, @Med_Name, @Med_Description)";
                 connection.Query<Medication>(sql, medication);
-                connection.Close();
             }
         }
 
@@ -49,7 +54,6 @@ namespace AspNet.Identity.Dapper
                 connection.Open();
                 string sql = "DELETE FROM Medication WHERE Id = @Id;";
                 connection.Query<Medication>(sql, Id);
-                connection.Close();
             }
         }
 
@@ -60,7 +64,6 @@ namespace AspNet.Identity.Dapper
                 connection.Open();
                 string sql = "UPDATE  Medication SET med_name = @med_name, med_description = @med_description WHERE ID = @Id;";
                 connection.Query<Medication>(sql, medication);
-                connection.Close();
             }
         }
 

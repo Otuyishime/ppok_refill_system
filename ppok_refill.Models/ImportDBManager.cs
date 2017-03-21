@@ -8,6 +8,6 @@ namespace AspNet.Identity.Dapper
 {
     public class ImportDBManager
     {
-        string connectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog=ppok_refill_system;Integrated Security=True";
+        //string connectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog=ppok_refill_system;Integrated Security=True";
     }
 }
