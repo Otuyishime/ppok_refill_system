@@ -1,0 +1,9 @@
+﻿@model Web.Models.RecallLineViewModel
+
+<tr>
+    <td>
+        @Html.CheckBoxFor(m => m.Selected)
+    </td>
+    <td>@Model.PatientName.ToLower()</td>
+    <td>@Model.MedecineName.ToLower()</td>
+</tr>

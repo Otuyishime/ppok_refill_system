@@ -16,14 +16,14 @@
                 <h3>New Import</h3>
                 <div class="form-group">
                     <label class="import-element" for="import-type">Choose import type</label>
-                    <select class="form-control input-sm" id="import-type">
+                    <select class="form-control" id="import-type">
                         <option>Daily</option>
                         <option>Weekly</option>
                         <option>Monthly</option>
                         <option>Yearly</option>
                     </select>
                     <label class="import-element" for="browse">Browse A File From You Computer</label>
-                    <input class="form-control input-sm" type="file" id="dataFile" name="upload" />
+                    <input class="form-control" type="file" id="dataFile" name="upload" />
                     <div class="import-error-message import-element">
                         @Html.ValidationSummary(true)
                     </div>

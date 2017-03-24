@@ -101,5 +101,10 @@ namespace AspNet.Identity.Dapper
         ///     Used to make user active or inactive
         /// </summary>
         public bool Active { get; set; }
+
+        /// <summary>
+        ///     Used to record the user's communication type
+        /// </summary>
+        public int CommunicationType { get; set; }
     }
 }

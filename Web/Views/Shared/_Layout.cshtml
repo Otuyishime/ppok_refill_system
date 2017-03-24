@@ -25,7 +25,7 @@
                         <li>@Html.ActionLink("Home", "Index", "Home")</li>
                         <li>@Html.ActionLink("Import", "Index", "Import")</li>
                         <li>@Html.ActionLink("Patients", "Patients", "Home")</li>
-                        <li>@Html.ActionLink("Recall", "Recall", "Home")</li>
+                        <li>@Html.ActionLink("Recalls", "Recall", "Home")</li>
 
                         if (User.IsInRole("Admin"))
                         {
@@ -48,6 +48,7 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/Dt/datatable")
     @RenderSection("scripts", required: false)
 </body>
 </html>

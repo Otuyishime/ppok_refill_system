@@ -87,7 +87,9 @@ namespace Web.Controllers
         {
             var usertable = new UserTable<AppMember>(Context);
             var pharmacists = usertable.GetUserByRole("Pharmacist")
-                .Select( p => new PharmacistViewModel { Name = p.UserName, DateBirth = p.DateBirth, Address = p.Address, Active = p.Active, Email = p.Email, PhoneNumber = p.PhoneNumber, Id = p.Id});
+                .Select( p => new PharmacistViewModel { Name = toUpperCase(p.UserName), DateBirth = p.DateBirth,
+                                                        Address = p.Address, Active = p.Active, Email = p.Email.ToLower(),
+                                                        PhoneNumber = p.PhoneNumber, Id = p.Id});
             
             var pharmacistsModel = new PharmacistsViewModel();
             pharmacistsModel.Pharmacists = pharmacists;
@@ -107,8 +109,8 @@ namespace Web.Controllers
                 return new EmptyResult();
             }
 
-            pharmacist_model.Name = user.UserName;
-            pharmacist_model.Email = user.Email;
+            pharmacist_model.Name = toUpperCase(user.UserName);
+            pharmacist_model.Email = user.Email.ToLower();
             pharmacist_model.DateBirth = user.DateBirth;
             pharmacist_model.Address = user.Address;
             pharmacist_model.Active = user.Active;
@@ -152,6 +154,11 @@ namespace Web.Controllers
             {
                 ModelState.AddModelError("", error);
             }
+        }
+
+        private string toUpperCase(string s)
+        {
+            return System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(s.ToLower());
         }
         #endregion
     }

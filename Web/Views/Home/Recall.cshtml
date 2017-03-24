@@ -1,17 +1,35 @@
-﻿
+﻿@model Web.Models.RecallLinesViewModel
+
 @{
     ViewBag.Title = "Recall";
 }
 
 <h3>Recalls</h3>
 <hr />
-<div class="row">
-    <div class="col-md-2">
-        @Html.ActionLink("Upload recall file", "Register", "Account", routeValues: null, htmlAttributes: new { @class = "btn btn-default btn-sm", id = "registerLink" })
-    </div>
-    <div class="col-md-2 col-md-offset-8">
-        @Html.ActionLink("Send recall message", "Register", "Account", routeValues: null, htmlAttributes: new { @class = "btn btn-default btn-sm pull-left", id = "registerLink" })
-    </div>
-</div>
-<hr />
+@*Html.BeginForm("ImportRecalls", "Home", null, FormMethod.Post, new { enctype = "multipart/form-data" })*@
+@using (Html.BeginForm("Recall", "Home", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
 
+    <div class="row">
+        <div class="col-md-6 new-import">
+            <h3>Import Recall File</h3>
+            <div class="form-group">
+                <label class="import-element" for="browse">Browse A File From You Computer</label>
+                <input class="form-control" type="file" id="dataFile" name="upload" />
+                <div class="import-error-message import-element">
+                    @Html.ValidationSummary(true)
+                </div>
+
+                <br />
+                <div id="submitFile">
+                    <input class="form-control btn btn-default input-sm btn-sm" type="submit" value="Import" id="submit-button" />
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div id="imported-recalls">
+    @Html.Partial("RecallsPartialView", Model)
+</div>

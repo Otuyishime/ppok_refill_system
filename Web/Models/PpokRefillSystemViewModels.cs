@@ -64,6 +64,11 @@ namespace Web.Models
         [Phone]
         [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
+
+        [Required]
+        [Range(minimum:1, maximum:3, ErrorMessage ="Wrong communication type choice.")]
+        [Display(Name = "Communication Preference")]
+        public int CommunicationType { get; set; }
     }
 
     public class PatientsViewModel
@@ -95,5 +100,25 @@ namespace Web.Models
         public int number_patients { get; set; }
         public RefillLinesViewModel Due_Refills { get; set; }
         public RefillLinesViewModel Pending_Refills { get; set; }
+    }
+
+    public class RecallLineViewModel
+    {
+        [Required]
+        public bool Selected { get; set; }
+
+        [Required]
+        [EmailAddress]
+        [Display(Name = "Patient")]
+        public string PatientName { get; set; }
+
+        [Required]
+        [Display(Name = "Medecine")]
+        public string MedecineName { get; set; }
+    }
+
+    public class RecallLinesViewModel
+    {
+        public List<RecallLineViewModel> Recalls { get; set; }
     }
 }

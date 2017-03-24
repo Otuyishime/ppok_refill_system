@@ -2,7 +2,7 @@
 
 <tr>
     @Html.HiddenFor(m => m.Id)
-    <td><strong>@Model.Name.ToLower()</strong></td>
+    <td><strong>@Model.Name</strong></td>
     <td>
         @if (String.IsNullOrEmpty(Model.Email))
         {
@@ -10,7 +10,7 @@
         }
         else
         {
-            @Model.Email.ToLower()
+            @Model.Email
         }
     </td>
     <td>

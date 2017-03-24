@@ -95,6 +95,13 @@ namespace Web.Controllers
                 return View(model);
             }
 
+            if (!user.Active)
+            {
+                ModelState.AddModelError("", "User account deactivated. Please contact the Admin.");
+                return View(model);
+            }
+
+
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
             var result = await SignInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, shouldLockout: false);

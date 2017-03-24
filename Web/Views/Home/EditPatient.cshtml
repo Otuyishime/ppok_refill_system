@@ -39,6 +39,26 @@
             @Html.TextBoxFor(m => m.Address, new { @class = "form-control" })
         </div>
     </div>
+    <hr />
+    <div class="form-group">
+        @Html.LabelFor(m => m.CommunicationType, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+
+            @Html.DropDownListFor(
+           model => model.CommunicationType,
+           new SelectList(
+                  new List<Object>{
+                       new { value = 1 , text = "Text Message"  },
+                       new { value = 2 , text = "Voice Call" },
+                       new { value = 3 , text = "Email" }
+                    },
+                  "value",
+                  "text",
+                   Model.CommunicationType
+           ), new { @class = "form-control" }
+        )
+        </div>
+    </div>
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-5">

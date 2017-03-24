@@ -11,6 +11,10 @@ namespace Web
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js"));
 
+            // Add datatable JS file
+            bundles.Add(new ScriptBundle("~/Dt/datatable").Include("~/Scripts/Datatables/jquery.dataTables.min.js"));
+
+
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
 
@@ -21,11 +25,13 @@ namespace Web
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
-                      "~/Scripts/respond.js"));
+                      "~/Scripts/respond.js",
+                      "~/Scripts/ppok-refill-system.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
+                      "~/Content/yeti.bootstrap.min.css",
+                      "~/Content/DataTables/css/jquery.dataTables.min.css",
                       "~/Content/site.css",
-                      "~/Content/bootstrap-simplex.css",
                       "~/Content/ppok-refill-system.css"));
 
             // Set EnableOptimizations to false for debugging. For more information,

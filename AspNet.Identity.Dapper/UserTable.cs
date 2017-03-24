@@ -72,7 +72,7 @@ namespace AspNet.Identity.Dapper
         /// <returns></returns>
         public List<TUser> GetUserByRole(string roleName)
         {
-            return db.Connection.Query<TUser>(@"select Id, Email, PhoneNumber, UserName, DateBirth, Address, Active from Member,
+            return db.Connection.Query<TUser>(@"select Id, Email, PhoneNumber, UserName, DateBirth, Address, Active, CommunicationType from Member,
                                                 (select MemberRole.MemberId from MemberRole, Role
                                                  where Role.Name = @roleName and Role.Id = MemberRole.RoleId) as M_id
                                                  where Member.Id = M_id.MemberId", new { roleName = roleName }).ToList();
@@ -129,8 +129,8 @@ namespace AspNet.Identity.Dapper
         public void Insert(TUser member)
         {
            var id = db.Connection.ExecuteScalar<int>(@"Insert into Member
-                                    (UserName,  PasswordHash, SecurityStamp,Email,EmailConfirmed,PhoneNumber,PhoneNumberConfirmed, AccessFailedCount,LockoutEnabled,LockoutEndDateUtc,TwoFactorEnabled,DateBirth,Address,Active)
-                            values  (@name, @pwdHash, @SecStamp,@email,@emailconfirmed,@phonenumber,@phonenumberconfirmed,@accesscount,@lockoutenabled,@lockoutenddate,@twofactorenabled,@datebirth,@address,@active)
+                                    (UserName,  PasswordHash, SecurityStamp,Email,EmailConfirmed,PhoneNumber,PhoneNumberConfirmed, AccessFailedCount,LockoutEnabled,LockoutEndDateUtc,TwoFactorEnabled,DateBirth,Address,Active,CommunicationType)
+                            values  (@name, @pwdHash, @SecStamp,@email,@emailconfirmed,@phonenumber,@phonenumberconfirmed,@accesscount,@lockoutenabled,@lockoutenddate,@twofactorenabled,@datebirth,@address,@active,@CommunicationType)
                             SELECT Cast(SCOPE_IDENTITY() as int)",
                              new {  
                                     name=member.UserName,
@@ -146,7 +146,8 @@ namespace AspNet.Identity.Dapper
                                     twofactorenabled=member.TwoFactorEnabled,
                                     datebirth=member.DateBirth,
                                     address=member.Address,
-                                    active=member.Active
+                                    active=member.Active,
+                                    CommunicationType = member.CommunicationType
                              });
             // we need to set the id to the returned identity generated from the db
             member.Id = id;
@@ -183,7 +184,7 @@ namespace AspNet.Identity.Dapper
             db.Connection
               .Execute(@"Update Member set UserName = @userName, 
                 Email=@email, PhoneNumber=@phonenumber,
-                DateBirth=@datebirth, Address=@address, Active=@active 
+                DateBirth=@datebirth, Address=@address, Active=@active, CommunicationType=@CommunicationType
                 WHERE Id = @memberId",
                 new
                 {
@@ -193,7 +194,8 @@ namespace AspNet.Identity.Dapper
                     phonenumber = member.PhoneNumber,
                     datebirth = member.DateBirth,
                     address = member.Address,
-                    active = int_active
+                    active = int_active,
+                    CommunicationType = member.CommunicationType
                 }            
            );
         }

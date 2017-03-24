@@ -3,6 +3,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -22,6 +23,9 @@ namespace Web.Controllers
 
         private ApplicationDbContext _context;
 
+        private RecallLinesViewModel RecallLinesModel;
+        
+
         public HomeController()
         {
         }
@@ -30,7 +34,6 @@ namespace Web.Controllers
         {
             UserManager = userManager;
             SignInManager = signInManager;
-
         }
 
         public ApplicationSignInManager SignInManager
@@ -109,7 +112,9 @@ namespace Web.Controllers
         {
             var usertable = new UserTable<AppMember>(Context);
             var patients = usertable.GetUserByRole("Patient")
-                .Select(p => new PatientViewModel { Name = p.UserName, DateBirth = p.DateBirth, Address = p.Address, Email = p.Email, PhoneNumber = p.PhoneNumber, Id = p.Id });
+                .Select(p => new PatientViewModel { Name = toUpperCase(p.UserName), DateBirth = p.DateBirth,
+                    Address = p.Address, Email = p.Email.ToLower(), PhoneNumber = p.PhoneNumber, Id = p.Id,
+                    CommunicationType = p.CommunicationType });
 
             var patientsModel = new PatientsViewModel();
             patientsModel.Patients = patients;
@@ -129,11 +134,12 @@ namespace Web.Controllers
                 return new EmptyResult();
             }
 
-            patient_model.Name = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(user.UserName.ToLower());
+            patient_model.Name = toUpperCase(user.UserName);
             patient_model.Email = user.Email.ToLower();
             patient_model.DateBirth = user.DateBirth;
             patient_model.Address = user.Address;
             patient_model.PhoneNumber = user.PhoneNumber;
+            patient_model.CommunicationType = user.CommunicationType;
             patient_model.Id = user.Id;
 
             return View(patient_model);
@@ -151,6 +157,7 @@ namespace Web.Controllers
                     Email = model.Email,
                     DateBirth = model.DateBirth,
                     Address = model.Address,
+                    CommunicationType = model.CommunicationType,
                     Id = model.Id
                 };
                 var userStore = new UserStore<AppMember>(Context);
@@ -164,10 +171,92 @@ namespace Web.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        [ActionName(name: "Recall")]
+        public PartialViewResult ImportRecalls(HttpPostedFileBase upload)
+        {
+            if (ModelState.IsValid)
+            {
+                if (upload != null && upload.ContentLength > 0)
+                {
+                    var allowedExtensions = new[] { ".xlsx", ".csv" };
+                    if (upload.FileName.EndsWith(".csv"))
+                    {
+                        Stream stream = upload.InputStream;
+                        StreamReader csvreader = new StreamReader(stream);
+
+                        csvreader.ReadLine(); // skip the headers : first line
+
+                        RecallLinesModel = new RecallLinesViewModel();
+                        RecallLinesModel.Recalls = new List<RecallLineViewModel>();
+
+                        while (!csvreader.EndOfStream)
+                        {
+                            var line = csvreader.ReadLine();
+                            var values = line.Split(',');
+
+                            string PatientName = values[0];
+                            string MedecineName = values[1];
+
+                            // create recall lines
+                            var RecallLineModel = new RecallLineViewModel { Selected = false, PatientName = PatientName, MedecineName = MedecineName };
+                            RecallLinesModel.Recalls.Add(RecallLineModel);
+                            
+                        }
+                    }
+                    else if (upload.FileName.EndsWith(".xlsx"))
+                    {
+                        TempData["CustomError"] = "This is a .xlsx file!";
+                    }
+                    else
+                    {
+                        TempData["CustomError"] = "The file has to be a .csv file!";
+                    }
+                }
+                else
+                {
+                    TempData["CustomError"] = "You need to upload a file!";
+                }
+
+            }
+            
+            return PartialView("RecallsPartialView", RecallLinesModel);
+        }
+
+        [HttpGet]
         public ActionResult Recall()
         {
 
-            return View();
+            RecallLinesModel = new RecallLinesViewModel();
+            RecallLinesModel.Recalls = new List<RecallLineViewModel>();
+
+            var recallLinesModel = (RecallLinesViewModel)ViewData["recalls"];
+            if (recallLinesModel != null )
+            {
+                RecallLinesModel = recallLinesModel;
+            }
+            return View(RecallLinesModel);
         }
+
+        [HttpGet]
+        public ActionResult getRecall()
+        {
+            RecallLinesModel = new RecallLinesViewModel();
+            RecallLinesModel.Recalls = new List<RecallLineViewModel> { new RecallLineViewModel { PatientName = "Random", MedecineName = "Random", Selected = false },
+            new RecallLineViewModel { PatientName = "Random", MedecineName = "Random", Selected = true }, new RecallLineViewModel { PatientName = "Random", MedecineName = "Random", Selected = false },
+            new RecallLineViewModel { PatientName = "Random", MedecineName = "Random", Selected = true }, new RecallLineViewModel { PatientName = "Random", MedecineName = "Random", Selected = false },
+            new RecallLineViewModel { PatientName = "Random", MedecineName = "Random", Selected = false }, new RecallLineViewModel { PatientName = "Random", MedecineName = "Random", Selected = false }};
+
+            return PartialView("RecallsPartialView", RecallLinesModel);
+        }
+
+        #region Helpers
+        private string toUpperCase(string s)
+        {
+            return System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(s.ToLower());
+        }
+        #endregion
     }
 }

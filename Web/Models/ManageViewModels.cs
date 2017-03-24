@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
+using System;
 
 namespace Web.Models
 {
@@ -12,6 +13,31 @@ namespace Web.Models
         public string PhoneNumber { get; set; }
         public bool TwoFactor { get; set; }
         public bool BrowserRemembered { get; set; }
+    }
+
+    public class ProfileViewModel: IndexViewModel
+    {
+        // Added this code to allow me to edit the whole profile
+        public int Id { get; set; }
+
+        [Display(Name = "Active")]
+        public bool Active { get; set; }
+
+        [Display(Name = "Address")]
+        public string Address { get; set; }
+
+        [Required]
+        [EmailAddress]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+
+        [Required]
+        [Display(Name = "Name")]
+        public string Name { get; set; }
+
+        [DataType(DataType.Date, ErrorMessage = "Please provide your birth date.")]
+        [Display(Name = "Birth Date")]
+        public DateTime DateBirth { get; set; }
     }
 
     public class ManageLoginsViewModel

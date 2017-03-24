@@ -48,14 +48,48 @@ namespace Web.Controllers
                 : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
                 : "";
 
-            var model = new IndexViewModel
+            var user_info = await UserManager.FindByIdAsync(Int32.Parse(User.Identity.GetUserId()));
+            var model = new ProfileViewModel
             {
+                // Set user info
+                Id = user_info.Id,
+                Name = user_info.UserName,
+                Email = user_info.Email,
+                DateBirth = user_info.DateBirth,
+                Address = user_info.Address,
+
                 HasPassword = HasPassword(),
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(Int32.Parse(User.Identity.GetUserId())),
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(Int32.Parse(User.Identity.GetUserId())),
                 //Logins = await UserManager.GetLoginsAsync(Int32.Parse(User.Identity.GetUserId())),
                 BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(User.Identity.GetUserId())
             };
+            return View(model);
+        }
+
+        // POST: /Manage/Profile
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> EditProfile(ProfileViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var AppMember = new AppMember
+                {
+                    UserName = model.Name,
+                    PhoneNumber = model.PhoneNumber,
+                    Email = model.Email,
+                    DateBirth = model.DateBirth,
+                    Address = model.Address,
+                    Active = model.Active,
+                    Id = model.Id
+                };
+                await UserManager.UpdateAsync(AppMember);
+
+                return RedirectToAction("Index", "Manage");
+
+            }
+            // If we got this far, something failed, redisplay form
             return View(model);
         }
 
