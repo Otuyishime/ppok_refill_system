@@ -1,10 +1,11 @@
-﻿
+﻿@model Web.Models.ImportViewModel
+
 @{
     ViewBag.Title = "Index";
 }
 
 <div class="import">
-    <h3>Imports Managements</h3>
+    <h3>Imports Management</h3>
     <hr />
 
     @using (Html.BeginForm("Upload", "Import", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
@@ -12,35 +13,79 @@
         @Html.AntiForgeryToken()
 
         <div class="row">
-            <div class="col-md-6 new-import">
-                <h3>New Import</h3>
-                <div class="form-group">
-                    <label class="import-element" for="import-type">Choose import type</label>
-                    <select class="form-control" id="import-type">
-                        <option>Daily</option>
-                        <option>Weekly</option>
-                        <option>Monthly</option>
-                        <option>Yearly</option>
-                    </select>
-                    <label class="import-element" for="browse">Browse A File From You Computer</label>
-                    <input class="form-control" type="file" id="dataFile" name="upload" />
-                    <div class="import-error-message import-element">
-                        @Html.ValidationSummary(true)
-                    </div>
+            <div class="col-md-5 new-import">
+                <div class="new-import-content">
+                    <h3>New Import</h3>
+                    <div class="form-group">
+                        <label class="import-element" for="import-type">Choose import type</label>
+                        <select class="form-control" id="import-type" name="type">
+                            <option>Daily</option>
+                            <option>Weekly</option>
+                            <option>Monthly</option>
+                            <option>Yearly</option>
+                        </select>
+                        <label class="import-element" for="browse">Browse A File From You Computer</label>
+                        <input class="form-control" type="file" id="dataFile" name="upload" />
+                        <div class="import-error-message import-element">
+                            @Html.ValidationSummary(true)
+                        </div>
 
-                    <div class="submit-button">
-                        <input class="form-control btn btn-default input-sm btn-sm" type="submit" value="Upload" />
+                        <div class="submit-button">
+                            <input class="form-control btn btn-default input-sm btn-sm" type="submit" value="Upload" />
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-6 old-import">
-                <h3>List of Previous Imports</h3>
+            <div class="col-md-7 old-imports">
+                <div class="old-imports-content">
+                    <h3 class="list-title">List of Previous Imports</h3>
 
-                Listing....
+                    @if (Model.Imports.Count == 0)
+                    {
+                        <p>There are not imports yet!</p>
+                    }
+                    else
+                    {
+                        <table id="import-table" class="table dt-responsive wrap" cellspacing="3">
+                            <thead>
+                                <tr>
+                                    <th class="no-order">Date</th>
+                                    <th class="no-order">Uploader</th>
+                                    <th class="no-order">Import Type</th>
+                                    <th class="no-order">File Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var import in Model.Imports)
+                                {
+                                    <tr>
+                                        <td>@import.Date_Uploaded.ToString()</td>
+                                        <td>@import.UserName</td>
+                                        <td>@import.Type</td>
+                                        <td>@import.FileName</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </div>
             </div>
 
         </div>
     }
 </div>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+
+            var import_Table = $('#import-table').DataTable({
+                paging: true,
+                "columnDefs": [{ "orderable": false, "targets": ['no-order'] }]
+            });
+        });
+    </script>
+}
 

@@ -137,5 +137,6 @@
     <Build Include="dbo\Tables\CommunicationType.sql" />
     <Build Include="dbo\Tables\Template.sql" />
     <None Include="Scripts\ScriptsIgnoredOnImport.sql" />
+    <Build Include="dbo\Tables\Imports.sql" />
   </ItemGroup>
 </Project>

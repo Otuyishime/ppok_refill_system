@@ -10,10 +10,11 @@ using Web.Models;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using AspNet.Identity.Dapper;
+using ppok_refill.Models;
 
 namespace Web.Controllers
 {
-    [Authorize(Roles = "Admin, Pharmacist")]
+    // [Authorize(Roles = "Admin, Pharmacist")]
     public class ImportController : Controller
     {
 
@@ -61,18 +62,23 @@ namespace Web.Controllers
         // GET: Import
         public ActionResult Index()
         {
+            ImportDBManager importDBManager = new ImportDBManager();
+            List<Import> list = importDBManager.getImports();
+            var importViewModel = new ImportViewModel { Imports = list };
+
             if (TempData["CustomError"] != null)
             {
                 ModelState.AddModelError(string.Empty, TempData["CustomError"].ToString());
             }
-            return View();
+            return View(importViewModel);
         }
 
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult Upload(HttpPostedFileBase upload)
+        public ActionResult Upload( HttpPostedFileBase upload)
         {
+            string type = Request.Form["type"].ToString();
             if (ModelState.IsValid)
             {
                 if (upload != null && upload.ContentLength > 0)
@@ -185,11 +191,15 @@ namespace Web.Controllers
                                 schedule.Future_Refill_Date = future_refill_date;
                                 schedule.Approved = false;
 
-                                // TODO: 
                                 ScheduleDBManager scheduleDBManager = new ScheduleDBManager();
                                 scheduleDBManager.create(schedule);
                             }
                         }
+
+                        // save the import record
+                        ImportDBManager importDBManager = new ImportDBManager();
+                        Import import = new Import { UserName  = User.Identity.Name , FileName = upload.FileName, Type = type };
+                        importDBManager.addImport(import);
                     }
                     else if (upload.FileName.EndsWith(".xlsx"))
                     {

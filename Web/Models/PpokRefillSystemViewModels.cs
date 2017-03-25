@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ppok_refill.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -120,5 +121,11 @@ namespace Web.Models
     public class RecallLinesViewModel
     {
         public List<RecallLineViewModel> Recalls { get; set; }
+    }
+    
+    /* this is for the import page */
+    public class ImportViewModel
+    {
+        public List<Import> Imports { get; set; }
     }
 }
