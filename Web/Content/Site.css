@@ -42,3 +42,30 @@ textarea {
 .import .import-error-message ul li {
     padding-left: 0px;
 }
+
+.import .new-import{
+    padding: 10px;
+}
+.import .new-import-content {
+    background: #f5f5f5;
+    border: solid #ddd 1px;
+    padding: 20px;
+}
+
+.import .old-imports{
+    padding: 10px;
+}
+
+.import .old-imports-content {
+    background: #f5f5f5;
+    border: solid #ddd 1px;
+    padding: 20px;
+}
+
+.import .old-imports-content .list-title {
+    margin-bottom: 30px;
+}
+
+table.dataTable thead .sorting_asc {
+    background-image: none;
+}

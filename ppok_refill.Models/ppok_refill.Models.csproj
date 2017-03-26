@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommunicationType.cs" />
+    <Compile Include="Import.cs" />
     <Compile Include="ImportDBManager.cs" />
     <Compile Include="Medication.cs" />
     <Compile Include="MedicationDBManager.cs" />

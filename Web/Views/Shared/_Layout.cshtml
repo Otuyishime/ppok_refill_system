@@ -27,7 +27,7 @@
                         <li>@Html.ActionLink("Patients", "Patients", "Home")</li>
                         <li>@Html.ActionLink("Recalls", "Recall", "Home")</li>
 
-                        if (User.IsInRole("Admin"))
+                        // if (User.IsInRole("Admin"))
                         {
                             <li>@Html.ActionLink("Pharmacists", "Pharmacists", "Admin")</li>
                             <li>@Html.ActionLink("Templates", "Templates", "Admin")</li>

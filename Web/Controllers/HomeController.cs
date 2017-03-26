@@ -12,7 +12,7 @@ using Web.Models;
 
 namespace Web.Controllers
 {
-    [Authorize(Roles = "Admin, Pharmacist")]
+    // [Authorize(Roles = "Admin, Pharmacist")]
     public class HomeController : Controller
     {
         private ApplicationUserManager _userManager;
