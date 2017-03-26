@@ -3,7 +3,7 @@
 <tr>
     @Html.HiddenFor(m => m.pId)
     <td><input type="checkbox" value=""></td>
-    <td><strong>@Model.PatientName.ToLower()</strong></td>
-    <td><strong>@Model.MedecineName.ToLower()</strong></td>
-    <td class="td-action">@Html.ActionLink("Edit patient info", "EditPatient", "Home", routeValues: new { id = Model.pId }, htmlAttributes: new { @class = "btn btn-default btn-sm" })</td>
+    <td><strong>@Model.PatientName</strong></td>
+    <td>@Model.MedecineName.ToLower()</td>
+    <td class="td-action">@Html.ActionLink("Edit patient", "EditPatient", "Home", routeValues: new { id = Model.pId, returnUrl = "Index" }, htmlAttributes: new { @class = "btn btn-default btn-sm" })</td>
 </tr>

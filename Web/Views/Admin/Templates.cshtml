@@ -6,21 +6,20 @@
 <h3>Message Templates</h3>
 <hr/>
 <ul class="nav nav-tabs nav-justified">
-    <li role="presentation" class="active">
+    <li class="active">
         <a href="#refill-tab" data-toggle="tab">Refill</a>
     </li>
-    <li role="presentation">
+    <li>
         <a href="#pickup-tab" data-toggle="tab">Pick up</a>
     </li>
-    <li role="presentation">
+    <li>
         <a href="#recall-tab" data-toggle="tab">Recall</a>
     </li>
-    <li role="presentation">
+    <li>
         <a href="#birthday-tab" data-toggle="tab">Birthday</a>
     </li>
 </ul>
 
-<link href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" rel="stylesheet" />
 <div class="tab-content">
     <div id="refill-tab" class="tab-pane">
         @{ Html.RenderPartial("_MessageTemplate");}

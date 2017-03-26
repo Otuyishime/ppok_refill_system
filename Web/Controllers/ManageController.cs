@@ -81,7 +81,7 @@ namespace Web.Controllers
                     Email = model.Email,
                     DateBirth = model.DateBirth,
                     Address = model.Address,
-                    Active = model.Active,
+                    Active = true,
                     Id = model.Id
                 };
                 await UserManager.UpdateAsync(AppMember);

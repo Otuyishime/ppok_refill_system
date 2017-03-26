@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using ppok_refill.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -50,6 +51,23 @@ namespace AspNet.Identity.Dapper
                 connection.Open();
                 return connection.Query<Schedule>("Select * from Schedule where Future_Refill_Date = @date", 
                     new { date = "2008-08-04" }).ToList();
+            }
+        }
+
+        // Get all due refills
+        public List<refillHelper> getDueRefillsInfo()
+        {
+            using (IDbConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                return connection.Query<refillHelper>(@"SELECT S_P.sch_Id as Schedule_Id, Pres_Id as Prescription_Id,
+                                                        S_P.User_Id as Patient_Id, UserName as PatientName, med_name as MedicationName 
+                                                        FROM Member, Medication, 
+                                                        (SELECT Id as Pres_Id, User_Id, S.sch_Id, Medication_Id FROM Prescription,
+                                                        (SELECT Prescription_Id, Id as sch_Id FROM Schedule WHERE Future_Refill_Date = @date) AS S
+                                                        WHERE Prescription.Id = S.Prescription_Id) AS S_P
+                                                        WHERE Member.Id = S_P.User_Id AND Medication.ID = S_P.Medication_Id",
+                    new { date = "2008/08/04" }).ToList();
             }
         }
     }

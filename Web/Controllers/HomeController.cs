@@ -96,11 +96,11 @@ namespace Web.Controllers
             system_overview_model.Pending_Refills = new RefillLinesViewModel();
             system_overview_model.Pending_Refills.Refills = new List<RefillLineViewModel>();
 
-            var retrievedDueRefills = scheduleManager.getDueRefills();
+            var retrievedDueRefills = scheduleManager.getDueRefillsInfo();
             foreach (var refill in retrievedDueRefills)
             {
-                var refillLine = new RefillLineViewModel { PatientName = refill.Prescription_Id.ToString(),
-                    MedecineName = refill.Future_Refill_Date.ToString(), pId = refill.Id.Value };
+                var refillLine = new RefillLineViewModel { PatientName = toUpperCase(refill.PatientName.ToString()),
+                    MedecineName = refill.MedicationName.ToString(), pId = refill.Patient_Id };
                 system_overview_model.Due_Refills.Refills.Add(refillLine);
             }
 
@@ -122,7 +122,7 @@ namespace Web.Controllers
             return View(patientsModel);
         }
 
-        public async Task<ActionResult> EditPatient(int id)
+        public async Task<ActionResult> EditPatient(int id, string returnUrl)
         {
             // initialize the view model
             var patient_model = new PatientViewModel();
@@ -142,6 +142,8 @@ namespace Web.Controllers
             patient_model.CommunicationType = user.CommunicationType;
             patient_model.Id = user.Id;
 
+            // set the return Url
+            ViewBag.returnUrl = returnUrl;
             return View(patient_model);
         }
 
@@ -164,7 +166,6 @@ namespace Web.Controllers
                 await userStore.UpdateAsync(AppMember);
 
                 return RedirectToAction("Patients", "Home");
-
             }
 
             // If we got this far, something failed, redisplay form

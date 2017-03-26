@@ -34,6 +34,6 @@
             @Model.Address
         }
     </td>
-    <td class="td-action">@Html.ActionLink("Edit patient info", "EditPatient", "Home", routeValues: new { id = Model.Id }, htmlAttributes: new { @class = "btn btn-default btn-sm" })</td>
+    <td class="td-action">@Html.ActionLink("Edit patient info", "EditPatient", "Home", routeValues: new { id = Model.Id, returnUrl = "Patients" }, htmlAttributes: new { @class = "btn btn-default btn-sm" })</td>
 </tr>
 
