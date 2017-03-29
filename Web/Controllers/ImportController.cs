@@ -198,7 +198,7 @@ namespace Web.Controllers
 
                         // save the import record
                         ImportDBManager importDBManager = new ImportDBManager();
-                        Import import = new Import { UserName  = User.Identity.Name , FileName = upload.FileName, Type = type };
+                        Import import = new Import { UserName  = User.Identity.Name , FileName = upload.FileName, Type = type, Date_Uploaded = DateTime.Now };
                         importDBManager.addImport(import);
                     }
                     else if (upload.FileName.EndsWith(".xlsx"))

@@ -16,7 +16,7 @@ namespace AspNet.Identity.Dapper
         DbManager dbManager;
 
         // string connectionString = ConfigurationManager.ConnectionStrings[0].Name;
-        string connectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog=ppok_refill_system;Integrated Security=True";
+        string connectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog=ppok;Integrated Security=True";
 
         public MedicationDBManager()
         {
