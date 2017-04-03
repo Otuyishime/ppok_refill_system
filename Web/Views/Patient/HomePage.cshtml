@@ -1,0 +1,63 @@
+﻿@model Web.Models.RefillResponseViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h3>Welcome to your refill system</h3>
+<hr />
+
+@using (Html.BeginForm("Index", "Patient", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <h4>Would you like to refill your medecine?</h4>
+    
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(m => m.SelectedConfirm, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+
+            @Html.DropDownListFor(
+           model => model.SelectedConfirm,
+           new SelectList(
+                  new List<Object>{
+                       new { value = true , text = "Yes"  },
+                       new { value = false , text = "No" }
+                    },
+                  "value",
+                  "text",
+                   Model.SelectedConfirm
+           ), new { @class = "form-control" }
+        )
+        </div>
+    </div>
+    <hr />
+    <h4>Change your contact preference</h4>
+    <div class="form-group">
+        @Html.LabelFor(m => m.CommunicationType, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+
+            @Html.DropDownListFor(
+           model => model.CommunicationType,
+           new SelectList(
+                  new List<Object>{
+                       new { value = 1 , text = "Text Message"  },
+                       new { value = 2 , text = "Voice Call" },
+                       new { value = 3 , text = "Email" }
+                    },
+                  "value",
+                  "text",
+                   Model.CommunicationType
+           ), new { @class = "form-control" }
+        )
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" class="btn btn-default btn-sm" value="Submit" />
+        </div>
+    </div>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

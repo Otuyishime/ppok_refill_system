@@ -21,4 +21,20 @@
             }
         });
     });
+
+    $("#due-refills-more-info-btn").on('click', function (event) {
+        var target = $('#today-refills-panel');
+        event.preventDefault();
+        $('html, body').animate({
+            scrollTop: target.offset().top - 50
+        }, 500);
+    });
+
+    $("#pending-refills-more-info-btn").on('click', function (event) {
+        var target = $('#pending-refills-panel');
+        event.preventDefault();
+        $('html, body').animate({
+            scrollTop: target.offset().top - 50
+        }, 500);
+    });
 });

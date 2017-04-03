@@ -1,0 +1,70 @@
+﻿@model List<Web.Models.RefillLineViewModel>
+
+@using (Ajax.BeginForm("sendMessages", "Home", null, new AjaxOptions { HttpMethod="POST"}))
+{
+<div class="panel panel-default" id="pending-refills-panel">
+    <div class="panel-heading">
+        <p>
+            <strong>Pending pick ups</strong>
+        </p>
+    </div>
+    <div class="panel-body">
+        <p>
+            <span class="pull-left">
+                @*@Html.ActionLink("Send messages", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-success btn-sm" })*@
+                <input class="form-control btn btn-success btn-sm" type="submit" value="Send messages" id="send-pickups-button" />
+            </span>
+            <span class="pull-right">
+                <input type="text" class="form-control input-sm" placeholder="Search patient" id="pending_refills_table_Search" style="border-bottom-color:black" />
+            </span>
+        </p>
+    </div>
+    <div class="panel-footer" id="refills-panel-footer">
+        @if (Model.Count() == 0)
+        {
+            <p>No pending refills ...</p>
+        }
+        else
+        {
+            <table id="pending-refills-table" class="table dt-responsive wrap" cellspacing="3">
+                <thead>
+                    <tr>
+                        <th class="action">
+                            Select
+                        </th>
+                        <th>Name</th>
+                        <th>Medecine</th>
+                        <th class="action">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.Count(); i++)
+                    {
+                        <tr>
+                            @Html.HiddenFor(m => m[i].pId)
+                            <td name="IsSelected">
+                                @Html.CheckBoxFor(m => m[i].IsSelected, new { @class = "refill-line-checkbox" })
+                            </td>
+                            <td name="PatientName">
+                                <strong>
+                                    @Html.HiddenFor(m => m[i].PatientName)
+                                    @Html.DisplayFor(m => m[i].PatientName)
+                                </strong>
+                            </td>
+                            <td name="MedecineName">
+                                @Html.HiddenFor(m => m[i].MedecineName)
+                                @Html.DisplayFor(m => m[i].MedecineName)
+                            </td>
+                            <td class="td-action">
+                                @Html.ActionLink("Edit patient", "EditPatient", "Home",
+                                routeValues: new { id = Model[i].pId, returnUrl = "Index" },
+                                htmlAttributes: new { @class = "btn btn-default btn-sm" })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+}

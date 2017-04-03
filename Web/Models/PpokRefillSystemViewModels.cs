@@ -81,8 +81,9 @@ namespace Web.Models
     {
         public int pId { get; set; }
 
+        public bool IsSelected { get; set; }
+
         [Required]
-        [EmailAddress]
         [Display(Name = "Patient")]
         public string PatientName { get; set; }
 
@@ -127,5 +128,22 @@ namespace Web.Models
     public class ImportViewModel
     {
         public List<Import> Imports { get; set; }
+    }
+
+    public class RefillResponseViewModel
+    {
+        [Required]
+        [Display(Name = "Confirm")]
+        public bool SelectedConfirm { get; set; }
+
+        [Required]
+        [EmailAddress]
+        [Display(Name = "Code")]
+        public string Code { get; set; }
+
+        [Required]
+        [Range(minimum: 1, maximum: 3, ErrorMessage = "Wrong communication type choice.")]
+        [Display(Name = "Communication Preference")]
+        public int CommunicationType { get; set; }
     }
 }

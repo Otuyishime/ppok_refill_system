@@ -64,10 +64,10 @@ namespace AspNet.Identity.Dapper
                                                         S_P.User_Id as Patient_Id, UserName as PatientName, med_name as MedicationName 
                                                         FROM Member, Medication, 
                                                         (SELECT Id as Pres_Id, User_Id, S.sch_Id, Medication_Id FROM Prescription,
-                                                        (SELECT Prescription_Id, Id as sch_Id FROM Schedule WHERE Future_Refill_Date = @date) AS S
+                                                        (SELECT Prescription_Id, Id as sch_Id FROM Schedule WHERE Future_Refill_Date >= @date) AS S
                                                         WHERE Prescription.Id = S.Prescription_Id) AS S_P
                                                         WHERE Member.Id = S_P.User_Id AND Medication.ID = S_P.Medication_Id",
-                    new { date = "2008/08/04" }).ToList();
+                    new { date = "2008/05/24" }).ToList();
             }
         }
     }
