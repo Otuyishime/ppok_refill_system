@@ -11,10 +11,11 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using AspNet.Identity.Dapper;
 using ppok_refill.Models;
+using System.Threading;
 
 namespace Web.Controllers
 {
-    // [Authorize(Roles = "Admin, Pharmacist")]
+    [Authorize(Roles = "Admin, Pharmacist")]
     public class ImportController : Controller
     {
 
@@ -70,6 +71,11 @@ namespace Web.Controllers
             {
                 ModelState.AddModelError(string.Empty, TempData["CustomError"].ToString());
             }
+
+            if (TempData["previous_url"] != null && (string)TempData["previous_url"] == "~/home/Upload")
+            {
+                ViewBag.UploadSuccess = "File uploaded successfully"; 
+            }
             return View(importViewModel);
         }
 
@@ -110,10 +116,12 @@ namespace Web.Controllers
                             string NDCUPCHRI = values[11];
                             string GPIGenericName = values[12];
 
-                            Email = PatientFirstName + "." + PatientLastName + "@ppok.com";
+                            //Email = PatientFirstName.ToLower() + "." + PatientLastName.ToLower() + "@ppok.com"; // email format: firstname.lastname
                             string username = PatientFirstName + "." + PatientLastName; // username format: firstname.lastname
                             if (DOB == "NULL") { DOB = "19760323"; }    // just for now 
-                            if (DateFilled == "NULL") { DateFilled = "19760323"; }    // just for now 
+                            if (DateFilled == "NULL") { DateFilled = "19760323"; }    // just for now
+
+                            //Thread.Sleep(10); // for testing
 
                             if (UserManager.FindByEmail(Email) == null && username != ".") // skip duplicated users - at least for now
                             {
@@ -197,9 +205,11 @@ namespace Web.Controllers
                         }
 
                         // save the import record
-                        ImportDBManager importDBManager = new ImportDBManager();
-                        Import import = new Import { UserName  = User.Identity.Name , FileName = upload.FileName, Type = type };
-                        importDBManager.addImport(import);
+                        //ImportDBManager importDBManager = new ImportDBManager();
+                        //Import import = new Import { UserName  = User.Identity.Name , FileName = upload.FileName, Type = type };
+                        //importDBManager.addImport(import);
+
+                        TempData["previous_url"] = "~/home/Upload";
                     }
                     else if (upload.FileName.EndsWith(".xlsx"))
                     {
@@ -214,9 +224,7 @@ namespace Web.Controllers
                 {
                     TempData["CustomError"] = "You need to pload a file!";
                 }
-
             }
-            // return View();
             return RedirectToAction("Index");
         }
 

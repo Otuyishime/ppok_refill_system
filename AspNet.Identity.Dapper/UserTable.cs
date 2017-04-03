@@ -129,8 +129,38 @@ namespace AspNet.Identity.Dapper
         public void Insert(TUser member)
         {
            var id = db.Connection.ExecuteScalar<int>(@"Insert into Member
-                                    (UserName,  PasswordHash, SecurityStamp,Email,EmailConfirmed,PhoneNumber,PhoneNumberConfirmed, AccessFailedCount,LockoutEnabled,LockoutEndDateUtc,TwoFactorEnabled,DateBirth,Address,Active,CommunicationType)
-                            values  (@name, @pwdHash, @SecStamp,@email,@emailconfirmed,@phonenumber,@phonenumberconfirmed,@accesscount,@lockoutenabled,@lockoutenddate,@twofactorenabled,@datebirth,@address,@active,@CommunicationType)
+                                                    
+                            (UserName,  
+                            PasswordHash, 
+                            SecurityStamp,
+                            Email,
+                            EmailConfirmed,
+                            PhoneNumber,
+                            PhoneNumberConfirmed, 
+                            AccessFailedCount,
+                            LockoutEnabled,
+                            LockoutEndDateUtc,
+                            TwoFactorEnabled,
+                            DateBirth,
+                            Address,
+                            Active,
+                            CommunicationType)
+                            values  
+                            (@name, 
+                            @pwdHash, 
+                            @SecStamp,
+                            @email,
+                            @emailconfirmed,
+                            @phonenumber,
+                            @phonenumberconfirmed,
+                            @accesscount,
+                            @lockoutenabled,
+                            @lockoutenddate,
+                            @twofactorenabled,
+                            @datebirth,
+                            @address,
+                            @active,
+                            @CommunicationType)
                             SELECT Cast(SCOPE_IDENTITY() as int)",
                              new {  
                                     name=member.UserName,
@@ -182,9 +212,18 @@ namespace AspNet.Identity.Dapper
         {
             int int_active = member.Active ? 1 : 0;
             db.Connection
-              .Execute(@"Update Member set UserName = @userName, 
-                Email=@email, PhoneNumber=@phonenumber,
-                DateBirth=@datebirth, Address=@address, Active=@active, CommunicationType=@CommunicationType
+              .Execute(@"Update Member set 
+                UserName = @userName,
+                Email=@email, 
+                PhoneNumber=@phonenumber,
+                DateBirth=@datebirth, 
+                Address=@address, 
+                Active=@active, 
+                CommunicationType=@CommunicationType,
+                EmailConfirmed=@emailConfirmed,
+                PasswordHash=@passwordHash,
+                SecurityStamp=@securityStamp,
+                PhoneNumberConfirmed=@phoneNumberConfirmed
                 WHERE Id = @memberId",
                 new
                 {
@@ -195,7 +234,11 @@ namespace AspNet.Identity.Dapper
                     datebirth = member.DateBirth,
                     address = member.Address,
                     active = int_active,
-                    CommunicationType = member.CommunicationType
+                    CommunicationType = member.CommunicationType,
+                    emailConfirmed = member.EmailConfirmed,
+                    passwordHash = member.PasswordHash,
+                    securityStamp = member.SecurityStamp,
+                    phoneNumberConfirmed = member.PhoneNumberConfirmed
                 }            
            );
         }

@@ -14,7 +14,7 @@ using System.Collections.Generic;
 
 namespace Web.Controllers
 {
-    // [Authorize]
+    [Authorize]
     public class AccountController : Controller
     {
         private ApplicationUserManager _userManager;
@@ -260,19 +260,27 @@ namespace Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var AppMember = await UserManager.FindByNameAsync(model.Email);
-                if (AppMember == null || !(await UserManager.IsEmailConfirmedAsync(AppMember.Id)))
+                var AppMember = await UserManager.FindByEmailAsync(model.Email);
+                if (AppMember == null) // || !(await UserManager.IsEmailConfirmedAsync(AppMember.Id)))
                 {
                     // Don't reveal that the AppMember does not exist or is not confirmed
                     return View("ForgotPasswordConfirmation");
                 }
 
-                // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                // Send an email with this link
-                // string code = await UserManager.GeneratePasswordResetTokenAsync(AppMember.Id);
-                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = AppMember.Id, code = code }, protocol: Request.Url.Scheme);		
-                // await UserManager.SendEmailAsync(AppMember.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                // return RedirectToAction("ForgotPasswordConfirmation", "Account");
+                if (AppMember.Active)
+                {
+                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
+                    // Send an email with this link
+                    string code = await UserManager.GeneratePasswordResetTokenAsync(AppMember.Id);
+                    var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = AppMember.Id, code = code }, protocol: Request.Url.Scheme);
+
+                    await UserManager.SendEmailAsync(AppMember.Id,
+                        subject: "PPOK Refill System: Reset Password",
+                        body: "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a><br />Or" +
+                        " click on the copy the following link on the browser: " + HttpUtility.HtmlEncode(callbackUrl)); 
+                }
+
+                return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
 
             // If we got this far, something failed, redisplay form
@@ -306,7 +314,7 @@ namespace Web.Controllers
             {
                 return View(model);
             }
-            var AppMember = await UserManager.FindByNameAsync(model.Email);
+            var AppMember = await UserManager.FindByEmailAsync(model.Email);
             if (AppMember == null)
             {
                 // Don't reveal that the AppMember does not exist

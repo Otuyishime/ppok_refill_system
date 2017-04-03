@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -12,7 +13,7 @@ using Web.Models;
 
 namespace Web.Controllers
 {
-    // [Authorize(Roles = "Admin, Pharmacist")]
+    [Authorize(Roles = "Admin, Pharmacist")]
     public class HomeController : Controller
     {
         private ApplicationUserManager _userManager;
@@ -100,7 +101,7 @@ namespace Web.Controllers
             foreach (var refill in retrievedDueRefills)
             {
                 var refillLine = new RefillLineViewModel { PatientName = toUpperCase(refill.PatientName.ToString()),
-                    MedecineName = refill.MedicationName.ToString(), pId = refill.Patient_Id };
+                    MedecineName = refill.MedicationName.ToString(), pId = refill.Patient_Id, IsSelected = true };
                 system_overview_model.Due_Refills.Refills.Add(refillLine);
             }
 
@@ -170,6 +171,34 @@ namespace Web.Controllers
 
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> sendMessages(List<RefillLineViewModel> model)
+        {
+            if (ModelState.IsValid)
+            {
+                var retrivedData = model;
+                var msgHelper = new MessageHelper();
+
+                // Processing here ...
+                if(UserManager.EmailService != null)
+                {
+                    foreach (var data in retrivedData)
+                    {
+                        if (data.IsSelected)
+                        {
+                            // Need to add medecine as well
+                            var app_member = await UserManager.FindByIdAsync(data.pId);
+                            await msgHelper.SendBirthdayMessageAsync(UserManager, app_member);
+                        }
+                    }
+                }
+                
+                return RedirectToAction("Index", "Home");
+            }
+
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
@@ -258,6 +287,22 @@ namespace Web.Controllers
         {
             return System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(s.ToLower());
         }
+
+        public enum CommunicationPreferenceId
+        {
+            PhoneCall,
+            TextMessage,
+            Email
+        }
+
+        public enum MessageTypeId
+        {
+            Refill,
+            PickUp,
+            Recall,
+            Birthday
+        }
+
         #endregion
     }
 }

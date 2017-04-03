@@ -12,7 +12,7 @@
                 <p>Today's refills</p>
             </div>
             <div class="panel-footer">
-                @Html.ActionLink("More info", "Register", "Account", routeValues: null, htmlAttributes: new { @class = "btn btn-default btn-sm", id = "registerLink" })
+                <a class="btn btn-default btn-sm" href="#" id="due-refills-more-info-btn">More info</a>
             </div>
         </div>
     </div>
@@ -20,10 +20,10 @@
         <div class="panel panel-default">
             <div class="panel-heading" style="background-color:dodgerblue">
                 <h3 style="color:white">@Model.Pending_Refills.Refills.Count()</h3>
-                <p>Pending refills</p>
+                <p>Pending pick ups</p>
             </div>
             <div class="panel-footer">
-                @Html.ActionLink("More info", "Register", "Account", routeValues: null, htmlAttributes: new { @class = "btn btn-default btn-sm", id = "registerLink" })
+                <a class="btn btn-default btn-sm" href="#" id="pending-refills-more-info-btn">More info</a>
             </div>
         </div>
     </div>
@@ -34,7 +34,7 @@
                 <p>Patients in the system</p>
             </div>
             <div class="panel-footer">
-                @Html.ActionLink("More info", "Patients", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-default btn-sm"})
+                @Html.ActionLink("More info", "Patients", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-default btn-sm" })
             </div>
         </div>
     </div>
@@ -42,107 +42,20 @@
 
 <div class="row">
     <div class="col-md-6">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <p>
-                    <strong>Today's refills</strong>
-                </p>
-            </div>
-            <div class="panel-body">
-                <p>
-                    <span class="pull-left">
-                        @Html.ActionLink("Send messages", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-info btn-sm" })
-                    </span>
-                    <span class="pull-right">
-                        <input type="text" class="form-control input-sm" placeholder="Search patient" id="daily_refills_table_Search" style="border-bottom-color:black" />
-                    </span>                
-                </p>
-            </div>
-            <div class="panel-footer">
-                @if (Model.Due_Refills.Refills.Count() == 0)
-                {
-                    <p>No due refills ...</p>
-                }
-                else
-                {
-                <table id="daily-refills-table" class="table dt-responsive wrap" cellspacing="3">
-                    <thead>
-                        <tr>
-                            <th class="action">
-                                <input type="checkbox" name="All" class="home-table-checkbox"/>
-                            </th>
-                            <th>Name</th>
-                            <th>Medecine</th>
-                            <th class="action">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var refill in Model.Due_Refills.Refills)
-                        {
-                            { Html.RenderPartial("_RefillLinePartialView", refill); }
-                        }
-                    </tbody>
-                </table>
-                }
-            </div>
-        </div>
+        @{Html.RenderPartial("_DueRefillMessagesPartialView", Model.Due_Refills.Refills);}
     </div>
     <div class="col-md-6">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <p>
-                    <strong>Pending refills</strong>
-                </p>
-            </div>
-            <div class="panel-body">
-                <p>
-                    <span class="pull-left">
-                            @Html.ActionLink("Send messages", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-success btn-sm" })
-                    </span>
-                    <span class="pull-right">
-                        <input type="text" class="form-control input-sm" placeholder="Search patient" id="pending_refills_table_Search" style="border-bottom-color:black" />
-                    </span>
-                </p>
-            </div>
-            <div class="panel-footer">
-                @if (Model.Pending_Refills.Refills.Count() == 0)
-                {
-                    <p>No pending refills ...</p>
-                }
-                else
-                {
-                <table id="pending-refills-table" class="table dt-responsive wrap" cellspacing="3">
-                    <thead>
-                        <tr>
-                            <th class="action">
-                                <input type="checkbox" value="" class="home-table-checkbox" />
-                            </th>
-                            <th>Name</th>
-                            <th>Medecine</th>
-                            <th class="action">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var refill in Model.Pending_Refills.Refills)
-                        {
-                            { Html.RenderPartial("_RefillLinePartialView", refill); }
-                        }
-                    </tbody>
-                </table>
-                }
-            </div>
-        </div>
+        @{Html.RenderPartial("_PendingPickUpMessagesPartialView", Model.Pending_Refills.Refills);}
     </div>
 </div>
 
 @section scripts
 {
-    <script src="~/Scripts/ppok-refill-system.js?Build=@Guid.NewGuid().ToString()"></script>
     <script>
         $(document).ready(function () {
 
             var daily_refills_Table = $('#daily-refills-table').DataTable({
-                paging: true,
+                paging: false,
                 "columnDefs": [{ "orderable": false, "targets": ['active', 'action'] }]
             });
 

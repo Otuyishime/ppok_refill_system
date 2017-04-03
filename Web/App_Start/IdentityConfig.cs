@@ -11,6 +11,10 @@ using Microsoft.Owin.Security;
 using Web.Models;
 using AspNet.Identity.Dapper;
 using Web.Controllers;
+using System.Net.Mail;
+using System.Net.Mime;
+using System.Net;
+using System.Configuration;
 
 namespace Web
 {
@@ -19,8 +23,42 @@ namespace Web
         public Task SendAsync(IdentityMessage message)
         {
             // Plug in your email service here to send an email.
-            return Task.FromResult(0);
+            //return Task.FromResult(0);
+            return sendMessage(message);
         }
+
+        Task sendMessage(IdentityMessage message)
+        {
+            #region formatter
+            string text = message.Body;
+            string html = message.Body;
+            #endregion
+
+            var credentialsInfo = new NetworkCredential(
+                 ConfigurationManager.AppSettings["mailAccount"],
+                 ConfigurationManager.AppSettings["mailPassword"]
+                 );
+
+            MailMessage msg = new MailMessage();
+            msg.From = new MailAddress(credentialsInfo.UserName);
+            msg.To.Add(new MailAddress(message.Destination));
+            msg.Subject = message.Subject;
+            msg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(text, null, MediaTypeNames.Text.Plain));
+            msg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(html, null, MediaTypeNames.Text.Html));
+
+            SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", Convert.ToInt32(587));
+
+            NetworkCredential credentials = new NetworkCredential(credentialsInfo.UserName, credentialsInfo.Password);
+            smtpClient.Credentials = credentials;
+            smtpClient.EnableSsl = true;
+
+            var task = Task.Run(() => {
+                smtpClient.Send(msg);
+            });
+
+            return task;
+        }
+
     }
 
     public class SmsService : IIdentityMessageService
@@ -39,6 +77,37 @@ namespace Web
             : base(store)
         {
         }
+
+        //public async Task<IdentityResult> ResetPasswordAsync(AppMember user,
+        //    string token, string newPassword)
+        //{
+        //    if (user == null)
+        //    {
+        //        throw new ArgumentNullException("user");
+        //    }
+
+        //    // Make sure the token is valid and the stamp matches.
+        //    if (!await UserTokenProvider.ValidateAsync("ResetPassword", token,
+        //        this, user))
+        //    {
+        //        return IdentityResult.Failed("Invalid token.");
+        //    }
+
+        //    // Make sure the new password is valid.
+        //    var result = await PasswordValidator.ValidateAsync(newPassword)
+        //        .ConfigureAwait(false);
+        //    if (!result.Succeeded)
+        //    {
+        //        return result;
+        //    }
+
+        //    // Update the password hash and invalidate the current security stamp.
+        //    user.PasswordHash = PasswordHasher.HashPassword(newPassword);
+        //    user.SecurityStamp = Guid.NewGuid().ToString();
+
+        //    // Save the user and return the outcome.
+        //    return await UpdateAsync(user).ConfigureAwait(false);
+        //}
 
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context) 
         {
