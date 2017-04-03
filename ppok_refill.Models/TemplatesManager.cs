@@ -12,17 +12,12 @@ namespace AspNet.Identity.Dapper
 {
     public class TemplatesManager
     {
-        /*
-        private DbManager db;
-
-        TemplatesManager(DbManager database)
-        {
-            db = database;
-        }
-
+        public static string connString = @"Data Source=.\SQLEXPRESS;Initial Catalog=ppok_refill_system;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        public DbManager db = new DbManager(connString);
+        
         public List<Template> listTemplates()
         {
-            string sql = @"SELECT A.Id, A.Temp_Message , A.Temp_Type_Id, A.Temp_Type_Name, a.Temp_Type_Description, Comm_Type_Id, comm_type_name, comm_type_description
+            string sql = @"SELECT A.Id, A.Temp_Message ,A.Temp_Type_Id, A.Temp_Type_Id, A.Temp_Type_Name, a.Temp_Type_Description, Comm_Type_Id,Comm_Type_Id, comm_type_name, comm_type_description
             FROM
             (SELECT Template.Id, Template.Temp_Message, Template.Comm_Type_Id, Template.Temp_Type_Id, TemplateType.Temp_Type_Name, TemplateType.Temp_Type_Description 
             FROM Template 
@@ -57,13 +52,13 @@ namespace AspNet.Identity.Dapper
         }
 
         //Updating a template given an id
-        public void updateTemplate(Template template)
+        public void updateTemplate(int Id, string Temp_Message)
         {
             db.Connection.Query<Template>("UPDATE Template SET " +
 
-                "Temp_Message = @Temp_Message " + " WHERE " + "Id = @Id", template);
+                "Temp_Message = @tMessage " + " WHERE " + "Id = @Id", new { tMessage=Temp_Message, Id = Id});
             
         }
-        */
+        
     }
 }

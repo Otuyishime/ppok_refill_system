@@ -1,12 +1,32 @@
 ﻿
+@using ppok_refill.Models;
+@model IEnumerable<ppok_refill.Models.Template>
+
+
 @{
     ViewBag.Title = "Templates";
-}
+ }
 
+@functions{
+
+    public List<Template> getMsgsForAMsgType(string msgType)
+    {
+        List<Template> templates = new List<Template>();
+        foreach (var item in Model)
+        {
+            if (item.templateType.Temp_Type_Name== msgType)
+            {
+                templates.Add(item);
+            }
+        }
+        return templates;
+    }
+}
 <h3>Message Templates</h3>
 <hr/>
+
 <ul class="nav nav-tabs nav-justified">
-    <li class="active">
+    <li>
         <a href="#refill-tab" data-toggle="tab">Refill</a>
     </li>
     <li>
@@ -22,15 +42,16 @@
 
 <div class="tab-content">
     <div id="refill-tab" class="tab-pane">
-        @{ Html.RenderPartial("_MessageTemplate");}
+        @{ Html.RenderPartial("_MessageTemplate",getMsgsForAMsgType("REFILL"));}
     </div>
     <div id="pickup-tab" class="tab-pane">
-        @{ Html.RenderPartial("_MessageTemplate");}
+        @{ Html.RenderPartial("_MessageTemplate", getMsgsForAMsgType("REFILL_CONFIRMED"));}
     </div>
     <div id="recall-tab" class="tab-pane">
-        @{ Html.RenderPartial("_MessageTemplate");}
+        @{ Html.RenderPartial("_MessageTemplate", getMsgsForAMsgType("RECALL"));}
     </div>
     <div id="birthday-tab" class="tab-pane">
-        @{ Html.RenderPartial("_MessageTemplate");}
+        @{ Html.RenderPartial("_MessageTemplate", getMsgsForAMsgType("BIRTHDAY"));}
     </div>
 </div>
+ 
