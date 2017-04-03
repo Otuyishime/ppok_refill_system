@@ -116,7 +116,7 @@ namespace Web.Controllers
                             string NDCUPCHRI = values[11];
                             string GPIGenericName = values[12];
 
-                            //Email = PatientFirstName.ToLower() + "." + PatientLastName.ToLower() + "@ppok.com"; // email format: firstname.lastname
+                            Email = PatientFirstName.ToLower() + "." + PatientLastName.ToLower() + "@ppok.com"; // email format: firstname.lastname
                             string username = PatientFirstName + "." + PatientLastName; // username format: firstname.lastname
                             if (DOB == "NULL") { DOB = "19760323"; }    // just for now 
                             if (DateFilled == "NULL") { DateFilled = "19760323"; }    // just for now
