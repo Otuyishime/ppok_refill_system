@@ -14,7 +14,7 @@ using System.Collections.Generic;
 
 namespace Web.Controllers
 {
-    // [Authorize]
+    [Authorize]
     public class AccountController : Controller
     {
         private ApplicationUserManager _userManager;

@@ -12,7 +12,7 @@ using Web.Models;
 
 namespace Web.Controllers
 {
-    // [Authorize(Roles = "Admin, Pharmacist")]
+    [Authorize(Roles = "Admin, Pharmacist")]
     public class HomeController : Controller
     {
         private ApplicationUserManager _userManager;
@@ -103,6 +103,13 @@ namespace Web.Controllers
                     MedecineName = refill.MedicationName.ToString(), pId = refill.Patient_Id };
                 system_overview_model.Due_Refills.Refills.Add(refillLine);
             }
+
+            // -----------TWILIO TEST-----------//
+            var loggedIn = new MessageController();
+            loggedIn.SendSms();
+            loggedIn.SendVoiceCall();
+            // ------END  TWILIO TEST-----------//
+
 
             system_overview_model.number_patients = num_patients;
             return View(system_overview_model);

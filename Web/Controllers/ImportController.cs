@@ -14,7 +14,7 @@ using ppok_refill.Models;
 
 namespace Web.Controllers
 {
-    // [Authorize(Roles = "Admin, Pharmacist")]
+    [Authorize(Roles = "Admin, Pharmacist")]
     public class ImportController : Controller
     {
 
