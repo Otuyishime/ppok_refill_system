@@ -19,7 +19,7 @@ namespace AspNet.Identity.Dapper
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                string sql = "INSERT INTO Imports VALUES(GETDATE(), @UserName, @Type, @FileName);";
+                string sql = "INSERT INTO Imports VALUES(@Date_Uploaded, @UserName, @Type, @FileName);";
                 connection.Query<Import>(sql, import);
             }
         }
