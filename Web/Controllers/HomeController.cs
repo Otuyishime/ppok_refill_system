@@ -90,7 +90,6 @@ namespace Web.Controllers
             var usertable = new UserTable<AppMember>(Context);
             var num_patients = usertable.GetUserByRole("Patient").Count();
 
-
             system_overview_model.Due_Refills = new RefillLinesViewModel();
             system_overview_model.Due_Refills.Refills = new List<RefillLineViewModel>();
 
@@ -110,7 +109,6 @@ namespace Web.Controllers
             loggedIn.SendSms();
             loggedIn.SendVoiceCall();
             // ------END  TWILIO TEST-----------//
-
 
             system_overview_model.number_patients = num_patients;
             return View(system_overview_model);

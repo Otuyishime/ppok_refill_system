@@ -44,13 +44,6 @@ namespace AspNet.Identity.Dapper
 
         }
 
-        public Template findTemplateGivenId(int id)
-        {
-            var result = db.Connection.Query<Template>("SELECT * FROM Template WHERE Id = @templateId", new { templateId = id }).First();
-
-            return result;
-        }
-
         //Updating a template given an id
         public void updateTemplate(int Id, string Temp_Message)
         {
@@ -59,6 +52,22 @@ namespace AspNet.Identity.Dapper
                 "Temp_Message = @tMessage " + " WHERE " + "Id = @Id", new { tMessage=Temp_Message, Id = Id});
             
         }
-        
+
+        public Template findTemplateById(int id)
+        {
+
+            var result = db.Connection.Query<Template>("SELECT * FROM Template WHERE Id = @templateId", new { templateId = id }).First();
+            return result;            
+        }
+
+        public Template findTemplateByTypeAndCommPref(int templateType, int communicationType)
+        {
+
+                var result = db.Connection.Query<Template>(@"SELECT * FROM Template WHERE Template.Comm_Type_Id=@communicationType AND Template.Temp_Type_Id=@templateType",
+                                        new { communicationType = communicationType, templateType = templateType }).FirstOrDefault();
+                return result;
+
+        }
+
     }
 }
