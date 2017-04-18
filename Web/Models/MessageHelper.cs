@@ -6,6 +6,7 @@ using System.Web;
 using Microsoft.AspNet.Identity;
 using AspNet.Identity.Dapper;
 using System.Web.Mvc;
+using Web.Controllers;
 
 namespace Web.Models
 {
@@ -26,6 +27,7 @@ namespace Web.Models
 
         public async Task SendBirthdayMessageAsync(ApplicationUserManager UserManager, AppMember user)
         {
+            String msgBody = "HAPPY BIRTHDAY TO YOU TODAY!!!";
             /*
              * Get the message template for communication preference 
              */
@@ -37,9 +39,14 @@ namespace Web.Models
 
                 await UserManager.SendEmailAsync(user.Id,
                     subject: "PPOK Refill System: Birthday Notification",
-                    body: "HAPPY BIRTHDAY TO YOU TODAY!!!");
+                    body: msgBody);
             }
-            
+
+            if (user.CommunicationType == (int)CommunicationPreferenceId.TextMessage)
+            {
+                var loggedIn = new MessageController();
+                loggedIn.SendSms("+1" + user.PhoneNumber, msgBody);
+            } 
         }
 
         public async Task SendRefillMessageAsync(ApplicationUserManager UserManager, AppMember user)

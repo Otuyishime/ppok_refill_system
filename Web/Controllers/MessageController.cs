@@ -17,10 +17,10 @@ namespace Web.Controllers
         private const string twilioPhoneNumber = "+18589432515";
 
         // Sends text message
-        public ActionResult SendSms()
+        public ActionResult SendSms(String toPhoneNumber, String body)
         {
             var twilioMessage = new TwilioRestClient(accountSid, authToken);
-            var message = twilioMessage.SendMessage(twilioPhoneNumber, "+17603909370", "Test - You are logged in!");
+            var message = twilioMessage.SendMessage(twilioPhoneNumber, toPhoneNumber, body);
 
             return null;
         }
