@@ -104,12 +104,6 @@ namespace Web.Controllers
                 system_overview_model.Due_Refills.Refills.Add(refillLine);
             }
 
-            // -----------TWILIO TEST-----------//
-            var loggedIn = new MessageController();
-            loggedIn.SendSms();
-            loggedIn.SendVoiceCall();
-            // ------END  TWILIO TEST-----------//
-
             system_overview_model.number_patients = num_patients;
             return View(system_overview_model);
         }
