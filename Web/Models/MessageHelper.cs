@@ -44,14 +44,14 @@ namespace Web.Models
 
             if (user.CommunicationType == (int)CommunicationPreferenceId.TextMessage)
             {
-                var sendText = new MessageController();
-                sendText.SendSms("+1" + user.PhoneNumber, msgBody);
-            } 
+                var birthdayText = new MessageController();
+                birthdayText.SendSms("+1" + user.PhoneNumber, msgBody);
+            }
 
             if (user.CommunicationType == (int)CommunicationPreferenceId.PhoneCall)
             {
-                var makeCall = new MessageController();
-                makeCall.SendVoiceCall("+1" + user.PhoneNumber);
+                var birthdayVoiceCall = new MessageController();
+                birthdayVoiceCall.SendVoiceCall("+1" + user.PhoneNumber);
             }
         }
 
@@ -73,10 +73,13 @@ namespace Web.Models
                     body: "Please confirm your refill by clicking <a href=\"" + callbackUrl + "\">here</a><br />Or" +
                     " click on the copy the following link on the browser: " + HttpUtility.HtmlEncode(callbackUrl));
             }
+
+            // Need to implement text message and phone call
         }
 
         public async Task SendRecallMessageAsync(ApplicationUserManager UserManager, AppMember user)
         {
+            String msgBody = "This notification is to let you know this (X) medecine has been recalled";
             /*
              * Get the message template for communication preference 
              */
@@ -90,12 +93,25 @@ namespace Web.Models
 
                 await UserManager.SendEmailAsync(user.Id,
                     subject: "PPOK Refill System: Recall Notification",
-                    body: "This notification is to let you know this (X) medecine has been recalled");
+                    body: msgBody);
+            }
+
+            if (user.CommunicationType == (int)CommunicationPreferenceId.TextMessage)
+            {
+                var recallText = new MessageController();
+                recallText.SendSms("+1" + user.PhoneNumber, msgBody);
+            }
+
+            if (user.CommunicationType == (int)CommunicationPreferenceId.PhoneCall)
+            {
+                var recallVoiceCall = new MessageController();
+                recallVoiceCall.SendVoiceCall("+1" + user.PhoneNumber);
             }
         }
 
         public async Task SendPickUpMessageAsync(ApplicationUserManager UserManager, AppMember user)
         {
+            String msgBody = "This notification is to let you know your (X) medecine is ready for pick up.";
             /*
              * Get the message template for communication preference 
              */
@@ -107,7 +123,19 @@ namespace Web.Models
 
                 await UserManager.SendEmailAsync(user.Id,
                     subject: "PPOK Refill System: Pick Up Notification",
-                    body: "This notification is to let you know your (X) medecine is ready for pick up.");
+                    body: msgBody);
+            }
+
+            if (user.CommunicationType == (int)CommunicationPreferenceId.TextMessage)
+            {
+                var pickupText = new MessageController();
+                pickupText.SendSms("+1" + user.PhoneNumber, msgBody);
+            }
+
+            if (user.CommunicationType == (int)CommunicationPreferenceId.PhoneCall)
+            {
+                var pickupVoiceCall = new MessageController();
+                pickupVoiceCall.SendVoiceCall("+1" + user.PhoneNumber);
             }
         }
 
