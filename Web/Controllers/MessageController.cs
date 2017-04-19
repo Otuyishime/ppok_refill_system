@@ -30,6 +30,8 @@ namespace Web.Controllers
             var twilioCall = new TwilioRestClient(accountSid, authToken);
             var options = new CallOptions();
             options.Url = "http://demo.twilio.com/docs/voice.xml";
+            //options.Url = "https://localhost:44335/Birthday.xml";
+            //options.Url = "~/Content/Twilio/Birthday.xml";
             options.To = toPhoneNumber;
             options.From = twilioPhoneNumber;
 

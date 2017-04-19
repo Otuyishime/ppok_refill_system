@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Response>
+  <Say voice="alice">This call is to let you know that your medication, (X), has been recalled.</Say>
+  <Play>http://demo.twilio.com/docs/classic.mp3</Play>
+</Response>

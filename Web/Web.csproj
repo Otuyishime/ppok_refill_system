@@ -355,6 +355,9 @@
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\ppok-refill-system.css" />
+    <Content Include="Content\Twilio\Birthday.xml" />
+    <Content Include="Content\Twilio\Pickup.xml" />
+    <Content Include="Content\Twilio\Recall.xml" />
     <Content Include="Content\yeti.bootstrap.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
