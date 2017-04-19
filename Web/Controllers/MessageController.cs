@@ -21,16 +21,16 @@ namespace Web.Controllers
         {
             var twilioMessage = new TwilioRestClient(accountSid, authToken);
             var message = twilioMessage.SendMessage(twilioPhoneNumber, toPhoneNumber, body);
-
+  
             return null;
         }
 
-        public ActionResult SendVoiceCall()
+        public ActionResult SendVoiceCall(String toPhoneNumber)
         {
             var twilioCall = new TwilioRestClient(accountSid, authToken);
             var options = new CallOptions();
             options.Url = "http://demo.twilio.com/docs/voice.xml";
-            options.To = "+17603909370";
+            options.To = toPhoneNumber;
             options.From = twilioPhoneNumber;
 
             var call = twilioCall.InitiateOutboundCall(options);

@@ -44,9 +44,15 @@ namespace Web.Models
 
             if (user.CommunicationType == (int)CommunicationPreferenceId.TextMessage)
             {
-                var loggedIn = new MessageController();
-                loggedIn.SendSms("+1" + user.PhoneNumber, msgBody);
+                var sendText = new MessageController();
+                sendText.SendSms("+1" + user.PhoneNumber, msgBody);
             } 
+
+            if (user.CommunicationType == (int)CommunicationPreferenceId.PhoneCall)
+            {
+                var makeCall = new MessageController();
+                makeCall.SendVoiceCall("+1" + user.PhoneNumber);
+            }
         }
 
         public async Task SendRefillMessageAsync(ApplicationUserManager UserManager, AppMember user)
