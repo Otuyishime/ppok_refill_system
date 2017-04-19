@@ -1,6 +1,7 @@
 ﻿using AspNet.Identity.Dapper;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using ppok_refill.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,6 +21,7 @@ namespace Web.Controllers
         private ApplicationSignInManager _signInManager;
 
         private ApplicationDbContext _context;
+        TemplatesManager manager = new TemplatesManager();
 
         public AdminController()
         {
@@ -80,7 +82,7 @@ namespace Web.Controllers
         // GET: Admin
         public ActionResult Index()
         {
-            return View();
+            return RedirectToAction("Templates");
         }
 
         public ActionResult Pharmacists()
@@ -141,10 +143,19 @@ namespace Web.Controllers
 
         public ActionResult Templates()
         {
-
-            return View();
+            List<Template> templates = manager.listTemplates();
+            ViewBag.templates = manager.listTemplates(); 
+            return View("Templates",templates);
         }
 
+        [HttpPost]
+        public ActionResult EditTemplate(int Id, string Temp_Message)
+        {
+            //update the template
+            manager.updateTemplate(Id,Temp_Message);
+
+            return RedirectToAction("Index");
+        }
 
 
         #region Helpers

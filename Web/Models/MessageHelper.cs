@@ -6,6 +6,7 @@ using System.Web;
 using Microsoft.AspNet.Identity;
 using AspNet.Identity.Dapper;
 using System.Web.Mvc;
+using Web.Controllers;
 
 namespace Web.Models
 {
@@ -26,6 +27,7 @@ namespace Web.Models
 
         public async Task SendBirthdayMessageAsync(ApplicationUserManager UserManager, AppMember user)
         {
+            String msgBody = "HAPPY BIRTHDAY TO YOU TODAY!!!";
             /*
              * Get the message template for communication preference 
              */
@@ -37,34 +39,47 @@ namespace Web.Models
 
                 await UserManager.SendEmailAsync(user.Id,
                     subject: "PPOK Refill System: Birthday Notification",
-                    body: "HAPPY BIRTHDAY TO YOU TODAY!!!" +
-                    "<br /><br />" +
-                    "To unsubscribe, click here " + "<a href=\"" + "" + "\">unsubscribe</a>");
+                    body: msgBody);
             }
-            
+
+            if (user.CommunicationType == (int)CommunicationPreferenceId.TextMessage)
+            {
+                var birthdayText = new MessageController();
+                birthdayText.SendSms("+1" + user.PhoneNumber, msgBody);
+            }
+
+            if (user.CommunicationType == (int)CommunicationPreferenceId.PhoneCall)
+            {
+                var birthdayVoiceCall = new MessageController();
+                birthdayVoiceCall.SendVoiceCall("+1" + user.PhoneNumber);
+            }
         }
 
-        public async Task<bool> SendRefillMessageAsync(ApplicationUserManager UserManager, AppMember user, string callbackUrl, string unSubscribeCallBack, string code)
+        public async Task SendRefillMessageAsync(ApplicationUserManager UserManager, AppMember user)
         {
             /*
              * Get the message template for communication preference 
              */
             var result = template_manager.findTemplateByTypeAndCommPref((int)MessageTypeId.Refill, user.CommunicationType);
-            //var message_template = result.Temp_Message ?? "No Template";
+            var message_template = result.Temp_Message ?? "No Template";
             if (user.CommunicationType == (int)CommunicationPreferenceId.Email)
             {
+                string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                UrlHelper Url = new UrlHelper();
+                var callbackUrl = Url.Action("Index", "Patient", routeValues: new { userId = user.Id, code = code }, protocol: "http");
+
                 await UserManager.SendEmailAsync(user.Id,
                     subject: "PPOK Refill System: Refill Notification",
                     body: "Please confirm your refill by clicking <a href=\"" + callbackUrl + "\">here</a><br />Or" +
-                    " click on the copy the following link on the browser: " + HttpUtility.HtmlEncode(callbackUrl) + 
-                    "<br /> Use the following code to access the confirmation page: <h3>" + HttpUtility.HtmlEncode(code)+ "</h4>" +
-                    "To unsubscribe, click here " + "<a href=\"" + HttpUtility.HtmlEncode(unSubscribeCallBack) + "\">unsubscribe</a>");
+                    " click on the copy the following link on the browser: " + HttpUtility.HtmlEncode(callbackUrl));
             }
-            return true;
+
+            // Need to implement text message and phone call
         }
 
         public async Task SendRecallMessageAsync(ApplicationUserManager UserManager, AppMember user)
         {
+            String msgBody = "This notification is to let you know this (X) medecine has been recalled";
             /*
              * Get the message template for communication preference 
              */
@@ -78,14 +93,25 @@ namespace Web.Models
 
                 await UserManager.SendEmailAsync(user.Id,
                     subject: "PPOK Refill System: Recall Notification",
-                    body: "This notification is to let you know this (X) medecine has been recalled" +
-                    "<br /><br />" +
-                    "To unsubscribe, click here " + "<a href=\"" + callbackUrl + "\">unsubscribe</a>");
+                    body: msgBody);
+            }
+
+            if (user.CommunicationType == (int)CommunicationPreferenceId.TextMessage)
+            {
+                var recallText = new MessageController();
+                recallText.SendSms("+1" + user.PhoneNumber, msgBody);
+            }
+
+            if (user.CommunicationType == (int)CommunicationPreferenceId.PhoneCall)
+            {
+                var recallVoiceCall = new MessageController();
+                recallVoiceCall.SendVoiceCall("+1" + user.PhoneNumber);
             }
         }
 
         public async Task SendPickUpMessageAsync(ApplicationUserManager UserManager, AppMember user)
         {
+            String msgBody = "This notification is to let you know your (X) medecine is ready for pick up.";
             /*
              * Get the message template for communication preference 
              */
@@ -97,9 +123,19 @@ namespace Web.Models
 
                 await UserManager.SendEmailAsync(user.Id,
                     subject: "PPOK Refill System: Pick Up Notification",
-                    body: "This notification is to let you know your (X) medecine is ready for pick up." +
-                    "<br /><br />" +
-                    "To unsubscribe, click here " + "<a href=\"" + " " + "\">unsubscribe</a>");
+                    body: msgBody);
+            }
+
+            if (user.CommunicationType == (int)CommunicationPreferenceId.TextMessage)
+            {
+                var pickupText = new MessageController();
+                pickupText.SendSms("+1" + user.PhoneNumber, msgBody);
+            }
+
+            if (user.CommunicationType == (int)CommunicationPreferenceId.PhoneCall)
+            {
+                var pickupVoiceCall = new MessageController();
+                pickupVoiceCall.SendVoiceCall("+1" + user.PhoneNumber);
             }
         }
 

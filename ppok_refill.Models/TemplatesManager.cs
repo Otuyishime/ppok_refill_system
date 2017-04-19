@@ -12,39 +12,62 @@ namespace AspNet.Identity.Dapper
 {
     public class TemplatesManager
     {
-        DbManager dbManager;
-        string connectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog=ppok_refill_system;Integrated Security=True";
-
-        public TemplatesManager()
+        public static string connString = @"Data Source=.\SQLEXPRESS;Initial Catalog=ppok_refill_system;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        public DbManager db = new DbManager(connString);
+        
+        public List<Template> listTemplates()
         {
+            string sql = @"SELECT A.Id, A.Temp_Message ,A.Temp_Type_Id, A.Temp_Type_Id, A.Temp_Type_Name, a.Temp_Type_Description, Comm_Type_Id,Comm_Type_Id, comm_type_name, comm_type_description
+            FROM
+            (SELECT Template.Id, Template.Temp_Message, Template.Comm_Type_Id, Template.Temp_Type_Id, TemplateType.Temp_Type_Name, TemplateType.Temp_Type_Description 
+            FROM Template 
+            JOIN TemplateType ON Template.Temp_Type_Id = TemplateType.Id) A 
+            JOIN CommunicationType ON CommunicationType.ID=A.Comm_Type_Id";
+
+            var queryResult = db.Connection.Query<Template, TemplateType, CommunicationType, Template>(sql,
+
+                    (t, tt, ct) =>
+                    {
+                        if (tt != null)
+                            t.templateType = tt;
+                        if (ct != null)
+                            t.communicationType = ct;
+                        return t;
+                    },
+
+                    splitOn: "Temp_Type_Id,Comm_Type_Id"
+
+                ).AsList();
+
+            return queryResult;
+            
+
         }
 
-        public TemplatesManager(DbManager database)
+        //Updating a template given an id
+        public void updateTemplate(int Id, string Temp_Message)
         {
-            dbManager = database;
+            db.Connection.Query<Template>("UPDATE Template SET " +
+
+                "Temp_Message = @tMessage " + " WHERE " + "Id = @Id", new { tMessage=Temp_Message, Id = Id});
+            
         }
 
         public Template findTemplateById(int id)
         {
-            using (IDbConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                var result = connection.Query<Template>("SELECT * FROM Template WHERE Id = @templateId", new { templateId = id }).First();
-                return result;
-            }
-            
+
+            var result = db.Connection.Query<Template>("SELECT * FROM Template WHERE Id = @templateId", new { templateId = id }).First();
+            return result;            
         }
 
         public Template findTemplateByTypeAndCommPref(int templateType, int communicationType)
         {
-            using (IDbConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                var result = connection.Query<Template>(@"SELECT * FROM Template WHERE Template.Comm_Type_Id=@communicationType AND Template.Temp_Type_Id=@templateType", 
+
+                var result = db.Connection.Query<Template>(@"SELECT * FROM Template WHERE Template.Comm_Type_Id=@communicationType AND Template.Temp_Type_Id=@templateType",
                                         new { communicationType = communicationType, templateType = templateType }).FirstOrDefault();
                 return result;
-            }
 
         }
+
     }
 }

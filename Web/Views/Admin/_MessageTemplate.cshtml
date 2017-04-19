@@ -1,7 +1,25 @@
 ﻿
-@using (Html.BeginForm("EditPharmacist", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-{
+@using ppok_refill.Models
+@model IEnumerable<ppok_refill.Models.Template>
+@*using (Html.BeginForm("EditPharmacist", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))*@
 <br />
+@functions{
+
+    public Template getMsgsForCommType(string comType)
+    {
+        Template template = new Template();
+        foreach (var item in Model)
+        {
+            if (item.communicationType.comm_type_name == comType)
+            {
+                template = item;
+            }
+        }
+
+        return template;
+    }
+}
+
 <div class="form-group">
     <div class="col-md-4">
         <div class="panel panel-default">
@@ -9,11 +27,12 @@
                 Phone Call
             </div>
             <div class="panel-body">
-                <textarea class="form-control" placeholder="Enter message ..." disabled></textarea>
+                <textarea class="form-control" id ="editArea_@getMsgsForCommType("VOICE").Id" disabled>@getMsgsForCommType("VOICE").Temp_Message</textarea>
             </div>
             <div class="panel-footer">
-                @Html.ActionLink("Edit Template", "Pharmacists", "Admin", null, new { @class = "btn btn-default btn-sm" })
-                <input type="submit" class="btn btn-default btn-sm pull-right" value="Save Template" />
+                <button class="btn btn-default btn-sm" id="editButton_@getMsgsForCommType("VOICE").Id"> Edit Template </button>
+                <input type="submit" id="saveButton_@getMsgsForCommType("VOICE").Id" class="btn btn-default btn-sm pull-right saveButton1" value="Save Template" />
+                
             </div>
         </div>
     </div>
@@ -24,11 +43,11 @@
                 Text Message
             </div>
             <div class="panel-body">
-                <textarea class="form-control" placeholder="Enter message ..." disabled></textarea>
+                <textarea class="form-control" id="editArea_@getMsgsForCommType("TEXT").Id" disabled>@getMsgsForCommType("TEXT").Temp_Message</textarea>
             </div>
             <div class="panel-footer">
-                @Html.ActionLink("Edit Template", "Pharmacists", "Admin", null, new { @class = "btn btn-default btn-sm" })
-                <input type="submit" class="btn btn-default btn-sm pull-right" value="Save Template" />
+                <button class="btn btn-default btn-sm" id="editButton_@getMsgsForCommType("TEXT").Id"> Edit Template </button>
+                <input type="submit" id="saveButton_@getMsgsForCommType("TEXT").Id" class="btn btn-default btn-sm pull-right saveButton1" value="Save Template" />
             </div>
         </div>
     </div>
@@ -39,18 +58,73 @@
                 Email Message
             </div>
             <div class="panel-body">
-                <textarea class="form-control" placeholder="Enter message ..." disabled></textarea>
+                <textarea class="form-control" id="editArea_@getMsgsForCommType("EMAIL").Id" disabled>@getMsgsForCommType("EMAIL").Temp_Message</textarea>
             </div>
             <div class="panel-footer">
-                @Html.ActionLink("Edit Template", "Pharmacists", "Admin", null, new { @class = "btn btn-default btn-sm" })
-                <input type="submit" class="btn btn-default btn-sm pull-right" value="Save Template" />
+                <button class="btn btn-default btn-sm" id="editButton_@getMsgsForCommType("EMAIL").Id"> Edit Template </button>
+                <input type="submit" id="saveButton_@getMsgsForCommType("EMAIL").Id" class="btn btn-default btn-sm pull-right saveButton1" value="Save Template" />
             </div>
         </div>
     </div>
 </div>
-}
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+ <script>
+     $(document).ready(function () {
+         $("#editButton_@getMsgsForCommType("VOICE").Id").click(function () {
+             $("#editArea_@getMsgsForCommType("VOICE").Id").attr("disabled", false);
+         });
+         $("#editButton_@getMsgsForCommType("TEXT").Id").click(function () {
+             $("#editArea_@getMsgsForCommType("TEXT").Id").attr("disabled", false);
+         });
+         $("#editButton_@getMsgsForCommType("EMAIL").Id").click(function () {
+             $("#editArea_@getMsgsForCommType("EMAIL").Id").attr("disabled", false);
+         });
+
+
+         $("#saveButton_@getMsgsForCommType("TEXT").Id").click(function () {
+             var Temp_Message = $("#editArea_@getMsgsForCommType("TEXT").Id").val();
+             var Id = @getMsgsForCommType("TEXT").Id;
+
+             $.ajax({
+                 url: '@Url.Action("EditTemplate","Admin")',
+                 data: { Id: Id, Temp_Message:Temp_Message},
+                 type: 'POST',
+                 success: function () {
+                     $("#editArea_@getMsgsForCommType("TEXT").Id").attr("disabled", true);
+                 }
+             });
+
+         });
+         $("#saveButton_@getMsgsForCommType("VOICE").Id").click(function () {
+             var Temp_Message = $("#editArea_@getMsgsForCommType("VOICE").Id").val();
+             var Id = @getMsgsForCommType("VOICE").Id;
+
+             $.ajax({
+                 url: '@Url.Action("EditTemplate","Admin")',
+                 data: { Id: Id, Temp_Message:Temp_Message},
+                 type: 'POST',
+                 success: function () {
+                     $("#editArea_@getMsgsForCommType("VOICE").Id").attr("disabled", true);
+                 }
+             });
+
+         });
+         $("#saveButton_@getMsgsForCommType("EMAIL").Id").click(function () {
+             var Temp_Message = $("#editArea_@getMsgsForCommType("EMAIL").Id").val();
+             var Id = @getMsgsForCommType("EMAIL").Id;
+
+             $.ajax({
+                 url: '@Url.Action("EditTemplate","Admin")',
+                 data: { Id: Id, Temp_Message:Temp_Message},
+                 type: 'POST',
+                 success: function () {
+                     $("#editArea_@getMsgsForCommType("EMAIL").Id").attr("disabled", true);
+                 }
+             });
+
+         });
+     });
+</script>
+ 
