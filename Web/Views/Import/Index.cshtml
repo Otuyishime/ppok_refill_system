@@ -7,14 +7,7 @@
 <div class="import">
     <h3>Imports Management</h3>
     <hr />
-    <div id="processing-bar" hidden>
-        <div class="progress">
-            <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar"
-                 aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:100%">
-                <span id="status">Processing...</span>
-            </div>
-        </div>
-    </div>
+    
     <h4 id="uploadSucess" class="text-success">@ViewBag.UploadSuccess</h4>
 
     @using (Html.BeginForm("Upload", "Import", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
@@ -40,6 +33,14 @@
 
                     <div>
                         <input class="form-control btn btn-default" type="submit" value="Upload" id="Upload-button" />
+                        <div id="processing-bar" hidden>
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar"
+                                     aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+                                    <span id="status">Processing...</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

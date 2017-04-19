@@ -130,16 +130,22 @@ namespace Web.Models
         public List<Import> Imports { get; set; }
     }
 
+    public class RefillViewModel
+    {
+        [Required]
+        [Display(Name = "code")]
+        public string Code { get; set; }
+
+        public string PatientName { get; set; }
+    }
+
     public class RefillResponseViewModel
     {
+        public int pickupId { get; set; }
+
         [Required]
         [Display(Name = "Confirm")]
         public bool SelectedConfirm { get; set; }
-
-        [Required]
-        [EmailAddress]
-        [Display(Name = "Code")]
-        public string Code { get; set; }
 
         [Required]
         [Range(minimum: 1, maximum: 3, ErrorMessage = "Wrong communication type choice.")]

@@ -1,30 +1,36 @@
-﻿@model Web.Models.RefillResponseViewModel
+﻿@model Web.Models.RefillViewModel
 
-@{
-    ViewBag.Title = "Index";
-}
+<div id="code-prompt">
+    <div class="form-horizontal">
+        <h3>Welcome to your refill system!</h3>
+        <hr />
+        @Html.HiddenFor(m => m.PatientName)
 
-<h3>Welcome to your refill system</h3>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Code, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control", @id = "code-box"} })
+                @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
-@using (Html.BeginForm("Index", "Patient", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-{
-    @Html.AntiForgeryToken()
-    <h4>Please enter the provide code</h4>
-    <hr />
-    @Html.ValidationSummary("", new { @class = "text-danger" })
-    <div class="form-group">
-        @Html.LabelFor(m => m.Code, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Code, new { @class = "form-control input-sm" })
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <button class="btn btn-default btn-sm" id="submit-code-button"
+                        onclick="window.ppok_refill_system_module.getPatientConfirmationRefillForm()"
+                        value="Submit">
+                    Submit
+                </button>
+            </div>
         </div>
     </div>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default btn-sm" value="Submit" />
-        </div>
-    </div>
-}
+</div>
+
+<div id="refill-form">
+
+</div>
+
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
 
+}

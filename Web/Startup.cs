@@ -14,6 +14,9 @@ namespace Web
         {
             ConfigureAuth(app);
             createUserRolesAndDefaultUser();
+
+            // Map the SignalR Hubs
+            app.MapSignalR();
         }
 
         public void createUserRolesAndDefaultUser()

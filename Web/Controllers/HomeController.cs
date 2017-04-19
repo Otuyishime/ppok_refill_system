@@ -1,6 +1,7 @@
 ﻿using AspNet.Identity.Dapper;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using ppok_refill.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,7 +14,7 @@ using Web.Models;
 
 namespace Web.Controllers
 {
-    [Authorize(Roles = "Admin, Pharmacist")]
+    //[Authorize(Roles = "Admin, Pharmacist")]
     public class HomeController : Controller
     {
         private ApplicationUserManager _userManager;
@@ -97,23 +98,71 @@ namespace Web.Controllers
             system_overview_model.Pending_Refills = new RefillLinesViewModel();
             system_overview_model.Pending_Refills.Refills = new List<RefillLineViewModel>();
 
-            var retrievedDueRefills = scheduleManager.getDueRefillsInfo();
-            foreach (var refill in retrievedDueRefills)
+            var retrievedduerefills = scheduleManager.getDueRefillsInfo();
+            foreach (var refill in retrievedduerefills)
             {
-                var refillLine = new RefillLineViewModel { PatientName = toUpperCase(refill.PatientName.ToString()),
-                    MedecineName = refill.MedicationName.ToString(), pId = refill.Patient_Id, IsSelected = true };
-                system_overview_model.Due_Refills.Refills.Add(refillLine);
+                var refillline = new RefillLineViewModel()
+                {
+                    PatientName = toUpperCase(refill.PatientName.ToString()),
+                    MedecineName = refill.MedicationName.ToString(),
+                    pId = refill.Patient_Id,
+                    IsSelected = true
+                };
+                system_overview_model.Due_Refills.Refills.Add(refillline);
             }
 
             // -----------TWILIO TEST-----------//
-            var loggedIn = new MessageController();
-            loggedIn.SendSms();
-            loggedIn.SendVoiceCall();
+            //var loggedIn = new MessageController();
+            //loggedIn.SendSms();
+            //loggedIn.SendVoiceCall();
             // ------END  TWILIO TEST-----------//
 
 
             system_overview_model.number_patients = num_patients;
             return View(system_overview_model);
+        }
+        
+        [HttpPost]
+        public ActionResult GetDueRefills()
+        {
+            ScheduleDBManager scheduleManager = new ScheduleDBManager();
+            var retrievedDueRefills = scheduleManager.getDueRefillsInfo();
+            var DueRefills = new List<RefillLineViewModel>();
+            foreach (var refill in retrievedDueRefills)
+            {
+                var refillline = new RefillLineViewModel()
+                {
+                    PatientName = toUpperCase(refill.PatientName.ToString()),
+                    MedecineName = refill.MedicationName.ToString(),
+                    pId = refill.Patient_Id,
+                    IsSelected = true
+                };
+                DueRefills.Add(refillline);
+            }
+
+            return PartialView("_DueRefillMessagesPartialView", DueRefills);
+        }
+
+        [HttpPost]
+        public ActionResult GetPendingPickups()
+        {
+            var pendingPickUps = new PickUpsDBManager();
+            var retrievedPickUps = pendingPickUps.getDuePickUps();
+            var DueRefills = new List<RefillLineViewModel>();
+
+            foreach (var item in retrievedPickUps)
+            {
+                var refillline = new RefillLineViewModel()
+                {
+                    PatientName = item.PatientName,
+                    MedecineName = item.MedecineName,
+                    pId = item.PatientId,
+                    IsSelected = true
+                };
+                DueRefills.Add(refillline); 
+            }
+
+            return PartialView("_PendingPickUpMessagesPartialView", DueRefills);
         }
 
         public ActionResult Patients()
@@ -195,9 +244,28 @@ namespace Web.Controllers
                     {
                         if (data.IsSelected)
                         {
+                            
                             // Need to add medecine as well
                             var app_member = await UserManager.FindByIdAsync(data.pId);
-                            await msgHelper.SendBirthdayMessageAsync(UserManager, app_member);
+                            // Prepare a callback URL
+                            string code = "CHECKING123";
+                            var callbackUrl = Url.Action("Index", "Patient", routeValues: new { patientName = app_member.UserName}, protocol: Request.Url.Scheme);
+                            var unSubscribeCallBack = Url.Action("UnSubscribe", "Patient", routeValues: new { patientName = app_member.UserName }, protocol: Request.Url.Scheme);
+                            bool done = await msgHelper.SendRefillMessageAsync(UserManager, 
+                                app_member, callbackUrl, 
+                                unSubscribeCallBack, code);
+                            if (done)
+                            {
+                                var pickupMnger = new PickUpsDBManager();
+                                var pickup = new PickUp();
+                                pickup.GuidRand = code;
+                                pickup.IsPickUpReady = false;
+                                pickup.PatientName = app_member.UserName;
+                                pickup.MedecineName = data.MedecineName;
+                                pickup.PatientId = app_member.Id;
+
+                                pickupMnger.createPickUp(pickup);
+                            }
                         }
                     }
                 }
@@ -265,7 +333,6 @@ namespace Web.Controllers
         [HttpGet]
         public ActionResult Recall()
         {
-
             RecallLinesModel = new RecallLinesViewModel();
             RecallLinesModel.Recalls = new List<RecallLineViewModel>();
 
@@ -275,6 +342,12 @@ namespace Web.Controllers
                 RecallLinesModel = recallLinesModel;
             }
             return View(RecallLinesModel);
+        }
+
+        public ActionResult TestReply()
+        {
+            
+            return new EmptyResult();
         }
 
         [HttpGet]

@@ -37,29 +37,30 @@ namespace Web.Models
 
                 await UserManager.SendEmailAsync(user.Id,
                     subject: "PPOK Refill System: Birthday Notification",
-                    body: "HAPPY BIRTHDAY TO YOU TODAY!!!");
+                    body: "HAPPY BIRTHDAY TO YOU TODAY!!!" +
+                    "<br /><br />" +
+                    "To unsubscribe, click here " + "<a href=\"" + "" + "\">unsubscribe</a>");
             }
             
         }
 
-        public async Task SendRefillMessageAsync(ApplicationUserManager UserManager, AppMember user)
+        public async Task<bool> SendRefillMessageAsync(ApplicationUserManager UserManager, AppMember user, string callbackUrl, string unSubscribeCallBack, string code)
         {
             /*
              * Get the message template for communication preference 
              */
             var result = template_manager.findTemplateByTypeAndCommPref((int)MessageTypeId.Refill, user.CommunicationType);
-            var message_template = result.Temp_Message ?? "No Template";
+            //var message_template = result.Temp_Message ?? "No Template";
             if (user.CommunicationType == (int)CommunicationPreferenceId.Email)
             {
-                string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                UrlHelper Url = new UrlHelper();
-                var callbackUrl = Url.Action("Index", "Patient", routeValues: new { userId = user.Id, code = code }, protocol: "http");
-
                 await UserManager.SendEmailAsync(user.Id,
                     subject: "PPOK Refill System: Refill Notification",
                     body: "Please confirm your refill by clicking <a href=\"" + callbackUrl + "\">here</a><br />Or" +
-                    " click on the copy the following link on the browser: " + HttpUtility.HtmlEncode(callbackUrl));
+                    " click on the copy the following link on the browser: " + HttpUtility.HtmlEncode(callbackUrl) + 
+                    "<br /> Use the following code to access the confirmation page: <h3>" + HttpUtility.HtmlEncode(code)+ "</h4>" +
+                    "To unsubscribe, click here " + "<a href=\"" + HttpUtility.HtmlEncode(unSubscribeCallBack) + "\">unsubscribe</a>");
             }
+            return true;
         }
 
         public async Task SendRecallMessageAsync(ApplicationUserManager UserManager, AppMember user)
@@ -77,7 +78,9 @@ namespace Web.Models
 
                 await UserManager.SendEmailAsync(user.Id,
                     subject: "PPOK Refill System: Recall Notification",
-                    body: "This notification is to let you know this (X) medecine has been recalled");
+                    body: "This notification is to let you know this (X) medecine has been recalled" +
+                    "<br /><br />" +
+                    "To unsubscribe, click here " + "<a href=\"" + callbackUrl + "\">unsubscribe</a>");
             }
         }
 
@@ -94,7 +97,9 @@ namespace Web.Models
 
                 await UserManager.SendEmailAsync(user.Id,
                     subject: "PPOK Refill System: Pick Up Notification",
-                    body: "This notification is to let you know your (X) medecine is ready for pick up.");
+                    body: "This notification is to let you know your (X) medecine is ready for pick up." +
+                    "<br /><br />" +
+                    "To unsubscribe, click here " + "<a href=\"" + " " + "\">unsubscribe</a>");
             }
         }
 

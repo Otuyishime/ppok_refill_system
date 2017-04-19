@@ -12,18 +12,20 @@
                 <p>Today's refills</p>
             </div>
             <div class="panel-footer">
-                <a class="btn btn-default btn-sm" href="#" id="due-refills-more-info-btn">More info</a>
+                <a class="btn btn-default btn-sm" href="#" id="due-refills-more-info-btn" 
+                   onclick="window.ppok_refill_system_module.moveToShowDueRefills(event)">More info</a>
             </div>
         </div>
     </div>
     <div class="col-md-4">
         <div class="panel panel-default">
             <div class="panel-heading" style="background-color:dodgerblue">
-                <h3 style="color:white">@Model.Pending_Refills.Refills.Count()</h3>
+                <h3 style="color:white" id="pending-refills-count"></h3>
                 <p>Pending pick ups</p>
             </div>
             <div class="panel-footer">
-                <a class="btn btn-default btn-sm" href="#" id="pending-refills-more-info-btn">More info</a>
+                <a class="btn btn-default btn-sm" href="#" id="pending-refills-more-info-btn" 
+                   onclick="window.ppok_refill_system_module.moveToShowPendingPickups(event)">More info</a>
             </div>
         </div>
     </div>
@@ -41,38 +43,49 @@
 </div>
 
 <div class="row">
-    <div class="col-md-6">
-        @{Html.RenderPartial("_DueRefillMessagesPartialView", Model.Due_Refills.Refills);}
+    <div class="col-md-7">
+        <div id="due-refills-Container">
+
+        </div>
+        @*@{Html.RenderPartial("_DueRefillMessagesPartialView", Model.Due_Refills.Refills);}*@
     </div>
-    <div class="col-md-6">
-        @{Html.RenderPartial("_PendingPickUpMessagesPartialView", Model.Pending_Refills.Refills);}
+    <div class="col-md-5">
+        <div id="pending-pickups-Container">
+
+        </div>
+        @*@{Html.RenderPartial("_PendingPickUpMessagesPartialView", Model.Pending_Refills.Refills);}*@
     </div>
 </div>
 
 @section scripts
 {
     <script>
-        $(document).ready(function () {
+        $(document).ready(
+            function () {
+                window.ppok_refill_system_module.init();
 
-            var daily_refills_Table = $('#daily-refills-table').DataTable({
-                paging: false,
-                "columnDefs": [{ "orderable": false, "targets": ['active', 'action'] }]
-            });
+                // call the signalR method
+                window.ppok_refill_system_module.getDuePickups();
 
-            var pending_refills_Table = $('#pending-refills-table').DataTable({
-                paging: false,
-                "columnDefs": [{ "orderable": false, "targets": ['active', 'action'] }]
-            });
+                var daily_refills_Table = $('#daily-refills-table').DataTable({
+                    paging: false,
+                    "columnDefs": [{ "orderable": false, "targets": ['active', 'action'] }]
+                });
 
-            $('#daily_refills_table_Search').keyup(function ()
-                {
-                daily_refills_Table.search($(this).val()).draw();
+                var pending_refills_Table = $('#pending-refills-table').DataTable({
+                    paging: false,
+                    "columnDefs": [{ "orderable": false, "targets": ['active', 'action'] }]
+                });
+
+                $('#daily_refills_table_Search').keyup(function ()
+                    {
+                    daily_refills_Table.search($(this).val()).draw();
+                    }
+                );
+
+                $('#pending_refills_table_Search').keyup(function () {
+                    pending_refills_Table.search($(this).val()).draw();
                 }
-            );
-
-            $('#pending_refills_table_Search').keyup(function () {
-                pending_refills_Table.search($(this).val()).draw();
-            }
             );
         });
     </script>

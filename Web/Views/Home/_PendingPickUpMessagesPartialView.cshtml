@@ -34,7 +34,6 @@
                         </th>
                         <th>Name</th>
                         <th>Medecine</th>
-                        <th class="action">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -54,11 +53,6 @@
                             <td name="MedecineName">
                                 @Html.HiddenFor(m => m[i].MedecineName)
                                 @Html.DisplayFor(m => m[i].MedecineName)
-                            </td>
-                            <td class="td-action">
-                                @Html.ActionLink("Edit patient", "EditPatient", "Home",
-                                routeValues: new { id = Model[i].pId, returnUrl = "Index" },
-                                htmlAttributes: new { @class = "btn btn-default btn-sm" })
                             </td>
                         </tr>
                     }

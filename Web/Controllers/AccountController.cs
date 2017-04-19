@@ -272,7 +272,7 @@ namespace Web.Controllers
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     string code = await UserManager.GeneratePasswordResetTokenAsync(AppMember.Id);
-                    var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = AppMember.Id, code = code }, protocol: Request.Url.Scheme);
+                    var callbackUrl = Url.Action("ResetPassword", "Account", new { code = code }, protocol: Request.Url.Scheme);
 
                     await UserManager.SendEmailAsync(AppMember.Id,
                         subject: "PPOK Refill System: Reset Password",

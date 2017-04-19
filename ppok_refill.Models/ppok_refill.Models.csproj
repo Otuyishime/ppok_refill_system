@@ -51,6 +51,9 @@
     <Compile Include="Medication.cs" />
     <Compile Include="MedicationDBManager.cs" />
     <Compile Include="Patient.cs" />
+    <Compile Include="PickUp.cs" />
+    <Compile Include="PickUpsDBManager.cs" />
+    <Compile Include="PickUpsTable.cs" />
     <Compile Include="Prescription.cs" />
     <Compile Include="PrescriptionDBManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
