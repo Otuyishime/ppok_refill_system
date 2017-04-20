@@ -88,8 +88,8 @@ namespace Web.Models
         public string PatientName { get; set; }
 
         [Required]
-        [Display(Name = "Medecine")]
-        public string MedecineName { get; set; }
+        [Display(Name = "Medicine")]
+        public string MedicineName { get; set; }
     }
 
     public class RefillLinesViewModel
@@ -115,8 +115,8 @@ namespace Web.Models
         public string PatientName { get; set; }
 
         [Required]
-        [Display(Name = "Medecine")]
-        public string MedecineName { get; set; }
+        [Display(Name = "Medicine")]
+        public string MedicineName { get; set; }
     }
 
     public class RecallLinesViewModel
