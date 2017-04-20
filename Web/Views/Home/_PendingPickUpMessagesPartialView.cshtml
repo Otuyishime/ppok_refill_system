@@ -31,7 +31,7 @@
                         <th class="action">
                         </th>
                         <th>@Html.DisplayNameFor(model => model[0].PatientName)</th>
-                        <th>@Html.DisplayNameFor(model => model[0].MedecineName)</th>
+                        <th>@Html.DisplayNameFor(model => model[0].MedicineName)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -49,8 +49,8 @@
                                 </strong>
                             </td>
                             <td name="MedecineName">
-                                @Html.HiddenFor(m => m[i].MedecineName)
-                                @Html.DisplayFor(m => m[i].MedecineName)
+                                @Html.HiddenFor(m => m[i].MedicineName)
+                                @Html.DisplayFor(m => m[i].MedicineName)
                             </td>
                         </tr>
                     }

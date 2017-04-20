@@ -111,13 +111,6 @@ namespace Web.Controllers
                 system_overview_model.Due_Refills.Refills.Add(refillline);
             }
 
-            // -----------TWILIO TEST-----------//
-            //var loggedIn = new MessageController();
-            //loggedIn.SendSms();
-            //loggedIn.SendVoiceCall();
-            // ------END  TWILIO TEST-----------//
-
-
             system_overview_model.number_patients = num_patients;
             return View(system_overview_model);
         }
@@ -253,7 +246,7 @@ namespace Web.Controllers
                             var unSubscribeCallBack = Url.Action("UnSubscribe", "Patient", routeValues: new { patientName = app_member.UserName }, protocol: Request.Url.Scheme);
                             bool done = await msgHelper.SendRefillMessageAsync(UserManager, 
                                 app_member, callbackUrl, 
-                                unSubscribeCallBack, code);
+                                unSubscribeCallBack, code, data.MedicineName);
                             if (done)
                             {
                                 var pickupMnger = new PickUpsDBManager();
@@ -329,11 +322,10 @@ namespace Web.Controllers
 
                             // Prepare a callback URL
                             var unSubscribeCallBack = Url.Action("UnSubscribe", "Patient", routeValues: new { patientName = app_member.UserName }, protocol: Request.Url.Scheme);
-                            bool done = await msgHelper.SendPickUpMessageAsync(UserManager, app_member, unSubscribeCallBack);
+                            bool done = await msgHelper.SendPickUpMessageAsync(UserManager, app_member, unSubscribeCallBack, data.MedicineName);
                             if (done)
                             {
                                 var pickupMnger = new PickUpsDBManager();
-                                var pickup = new PickUp();
                                 pickupMnger.deletePickUp(data.pId);
                             }
                         }
