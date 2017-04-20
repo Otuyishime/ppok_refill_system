@@ -11,7 +11,7 @@ namespace ppok_refill.Models
         public int PickupId { get; set; }
         public int PatientId { get; set; }
         public string PatientName { get; set; }
-        public string MedecineName { get; set; }
+        public string MedicineName { get; set; }
         public string GuidRand { get; set; }
         public bool IsPickUpReady { get; set; }
     }
