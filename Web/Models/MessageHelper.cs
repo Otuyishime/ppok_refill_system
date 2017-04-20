@@ -32,7 +32,6 @@ namespace Web.Models
              * Get the message template for communication preference 
              */
             var result = template_manager.findTemplateByTypeAndCommPref((int)MessageTypeId.Birthday, user.CommunicationType);
-            //var message_template = result.Temp_Message ?? "No Template";
             if (user.CommunicationType == (int)CommunicationPreferenceId.Email)
             {
                 string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
@@ -126,7 +125,6 @@ namespace Web.Models
              * Get the message template for communication preference 
              */
             var result = template_manager.findTemplateByTypeAndCommPref((int)MessageTypeId.PickUp, user.CommunicationType);
-            //var message_template = result.Temp_Message ?? "No Template";
             if (user.CommunicationType == (int)CommunicationPreferenceId.Email)
             {
                 string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
