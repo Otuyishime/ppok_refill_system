@@ -104,7 +104,7 @@ namespace Web.Controllers
                 var refillline = new RefillLineViewModel()
                 {
                     PatientName = toUpperCase(refill.PatientName.ToString()),
-                    MedecineName = refill.MedicationName.ToString(),
+                    MedicineName = refill.MedicationName.ToString(),
                     pId = refill.Patient_Id,
                     IsSelected = true
                 };
@@ -133,7 +133,7 @@ namespace Web.Controllers
                 var refillline = new RefillLineViewModel()
                 {
                     PatientName = toUpperCase(refill.PatientName.ToString()),
-                    MedecineName = refill.MedicationName.ToString(),
+                    MedicineName = refill.MedicationName.ToString(),
                     pId = refill.Patient_Id,
                     IsSelected = true
                 };
@@ -155,7 +155,7 @@ namespace Web.Controllers
                 var refillline = new RefillLineViewModel()
                 {
                     PatientName = item.PatientName,
-                    MedecineName = item.MedecineName,
+                    MedicineName = item.MedicineName,
                     pId = item.PickupId,
                     IsSelected = true
                 };
@@ -261,7 +261,7 @@ namespace Web.Controllers
                                 pickup.GuidRand = code;
                                 pickup.IsPickUpReady = false;
                                 pickup.PatientName = app_member.UserName;
-                                pickup.MedecineName = data.MedecineName;
+                                pickup.MedicineName = data.MedicineName;
                                 pickup.PatientId = app_member.Id;
 
                                 pickupMnger.createPickUp(pickup);
@@ -297,7 +297,7 @@ namespace Web.Controllers
 
                             // Prepare a callback URL
                             var unSubscribeCallBack = Url.Action("UnSubscribe", "Patient", routeValues: new { patientName = app_member.UserName }, protocol: Request.Url.Scheme);
-                            await msgHelper.SendRecallMessageAsync(UserManager, app_member, unSubscribeCallBack, data.MedecineName);
+                            await msgHelper.SendRecallMessageAsync(UserManager, app_member, unSubscribeCallBack, data.MedicineName);
                         }
                     }
                 }
@@ -370,10 +370,10 @@ namespace Web.Controllers
                             var values = line.Split(',');
 
                             string PatientName = values[0];
-                            string MedecineName = values[1];
+                            string MedicineName = values[1];
 
                             // create recall lines
-                            var RecallLineModel = new RecallLineViewModel { IsSelected = true, PatientName = PatientName, MedecineName = MedecineName };
+                            var RecallLineModel = new RecallLineViewModel { IsSelected = true, PatientName = PatientName, MedicineName = MedicineName };
                             RecallLinesModel.Recalls.Add(RecallLineModel);
                             
                         }

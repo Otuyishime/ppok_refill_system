@@ -91,9 +91,9 @@ namespace Web.Models
             return true;
         }
 
-        public async Task SendRecallMessageAsync(ApplicationUserManager UserManager, AppMember user, string unSubscribeCallBack, string medecineName)
+        public async Task SendRecallMessageAsync(ApplicationUserManager UserManager, AppMember user, string unSubscribeCallBack, string medicineName)
         {
-            String msgBody = "This notification is to let you know this " + medecineName + " medecine has been recalled";
+            String msgBody = "This notification is to let you know this " + medicineName + " medecine has been recalled";
             /*
              * Get the message template for communication preference 
              */

@@ -29,7 +29,7 @@ namespace ppok_refill.Models
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                string sql = @"INSERT INTO DuePickUps ( PatientId, PatientName, MedicineName, GuidRand, IsPickUpReady)
+                string sql = @"INSERT INTO DuePickUps ( PatientId, PatientName, MedecineName, GuidRand, IsPickUpReady)
                                 VALUES(@PatientId, @PatientName, @MedicineName, @GuidRand, @IsPickUpReady)";
                 connection.Query<PickUp>(sql, new { PatientId = pickup.PatientId, PatientName = pickup.PatientName,
                     MedicineName = pickup.MedicineName, GuidRand = pickup.GuidRand,
