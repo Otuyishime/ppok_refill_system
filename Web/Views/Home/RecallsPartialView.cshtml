@@ -1,4 +1,4 @@
-﻿@model Web.Models.RecallLinesViewModel
+﻿@model List<Web.Models.RefillLineViewModel>
 
 @if (Model.Recalls.Count != 0)
 {
@@ -31,9 +31,24 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var recall in Model.Recalls)
-                             {
-                                { Html.RenderPartial("_RecallLinePartial", recall); }
+                            @for (int i = 0; i < Model.Count(); i++)
+                            {
+                                <tr>
+                                    @Html.HiddenFor(m => m[i].pId)
+                                    <td name="IsSelected">
+                                        @Html.CheckBoxFor(m => m[i].IsSelected, new { @class = "refill-line-checkbox" })
+                                    </td>
+                                    <td name="PatientName">
+                                        <strong>
+                                            @Html.HiddenFor(m => m[i].PatientName)
+                                            @Html.DisplayFor(m => m[i].PatientName)
+                                        </strong>
+                                    </td>
+                                    <td name="MedecineName">
+                                        @Html.HiddenFor(m => m[i].MedecineName)
+                                        @Html.DisplayFor(m => m[i].MedecineName)
+                                    </td>
+                                </tr>
                             }
                         </tbody>
                     </table>

@@ -107,7 +107,7 @@ namespace Web.Models
     public class RecallLineViewModel
     {
         [Required]
-        public bool Selected { get; set; }
+        public bool IsSelected { get; set; }
 
         [Required]
         [EmailAddress]

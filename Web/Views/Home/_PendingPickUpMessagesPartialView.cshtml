@@ -1,6 +1,6 @@
 ﻿@model List<Web.Models.RefillLineViewModel>
 
-@using (Ajax.BeginForm("sendMessages", "Home", null, new AjaxOptions { HttpMethod="POST"}))
+@using (Ajax.BeginForm("SendPickUps", "Home", null, new AjaxOptions { HttpMethod="POST"}))
 {
 <div class="panel panel-default" id="pending-refills-panel">
     <div class="panel-heading">
@@ -11,7 +11,6 @@
     <div class="panel-body">
         <p>
             <span class="pull-left">
-                @*@Html.ActionLink("Send messages", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-success btn-sm" })*@
                 <input class="form-control btn btn-success btn-sm" type="submit" value="Send messages" id="send-pickups-button" />
             </span>
             <span class="pull-right">
@@ -30,10 +29,9 @@
                 <thead>
                     <tr>
                         <th class="action">
-                            Select
                         </th>
-                        <th>Name</th>
-                        <th>Medecine</th>
+                        <th>@Html.DisplayNameFor(model => model[0].PatientName)</th>
+                        <th>@Html.DisplayNameFor(model => model[0].MedecineName)</th>
                     </tr>
                 </thead>
                 <tbody>

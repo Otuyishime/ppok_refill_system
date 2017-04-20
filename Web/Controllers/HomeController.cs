@@ -156,7 +156,7 @@ namespace Web.Controllers
                 {
                     PatientName = item.PatientName,
                     MedecineName = item.MedecineName,
-                    pId = item.PatientId,
+                    pId = item.PickupId,
                     IsSelected = true
                 };
                 DueRefills.Add(refillline); 
@@ -277,10 +277,78 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
+        public async Task<ActionResult> SendRecalls(List<RefillLineViewModel> model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                var retrivedData = model;
+                var msgHelper = new MessageHelper();
+
+                // Processing here ...
+                if (UserManager.EmailService != null)
+                {
+                    foreach (var data in retrivedData)
+                    {
+                        if (data.IsSelected)
+                        {
+                            // Need to add medecine as well
+                            var app_member = await UserManager.FindByNameAsync(data.PatientName);
+
+                            // Prepare a callback URL
+                            var unSubscribeCallBack = Url.Action("UnSubscribe", "Patient", routeValues: new { patientName = app_member.UserName }, protocol: Request.Url.Scheme);
+                            await msgHelper.SendRecallMessageAsync(UserManager, app_member, unSubscribeCallBack, data.MedecineName);
+                        }
+                    }
+                }
+
+                return RedirectToAction("Recall", "Home");
+            }
+
+            return RedirectToAction("Recall", "Home");
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> SendPickUps(List<RefillLineViewModel> model)
+        {
+            if (ModelState.IsValid)
+            {
+                var retrivedData = model;
+                var msgHelper = new MessageHelper();
+
+                // Processing here ...
+                if (UserManager.EmailService != null)
+                {
+                    foreach (var data in retrivedData)
+                    {
+                        if (data.IsSelected)
+                        {
+
+                            // Need to add medecine as well
+                            var app_member = await UserManager.FindByNameAsync(data.PatientName);
+
+                            // Prepare a callback URL
+                            var unSubscribeCallBack = Url.Action("UnSubscribe", "Patient", routeValues: new { patientName = app_member.UserName }, protocol: Request.Url.Scheme);
+                            bool done = await msgHelper.SendPickUpMessageAsync(UserManager, app_member, unSubscribeCallBack);
+                            if (done)
+                            {
+                                var pickupMnger = new PickUpsDBManager();
+                                var pickup = new PickUp();
+                                pickupMnger.deletePickUp(data.pId);
+                            }
+                        }
+                    }
+                }
+
+                return RedirectToAction("Index", "Home");
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        [ActionName(name: "Recall")]
-        public PartialViewResult ImportRecalls(HttpPostedFileBase upload)
+        public ActionResult ImportRecalls(HttpPostedFileBase upload)
         {
             if (ModelState.IsValid)
             {
@@ -291,7 +359,6 @@ namespace Web.Controllers
                     {
                         Stream stream = upload.InputStream;
                         StreamReader csvreader = new StreamReader(stream);
-
                         csvreader.ReadLine(); // skip the headers : first line
 
                         RecallLinesModel = new RecallLinesViewModel();
@@ -306,7 +373,7 @@ namespace Web.Controllers
                             string MedecineName = values[1];
 
                             // create recall lines
-                            var RecallLineModel = new RecallLineViewModel { Selected = false, PatientName = PatientName, MedecineName = MedecineName };
+                            var RecallLineModel = new RecallLineViewModel { IsSelected = true, PatientName = PatientName, MedecineName = MedecineName };
                             RecallLinesModel.Recalls.Add(RecallLineModel);
                             
                         }
@@ -327,7 +394,7 @@ namespace Web.Controllers
 
             }
             
-            return PartialView("RecallsPartialView", RecallLinesModel);
+            return View(RecallLinesModel.Recalls);
         }
 
         [HttpGet]
@@ -342,24 +409,6 @@ namespace Web.Controllers
                 RecallLinesModel = recallLinesModel;
             }
             return View(RecallLinesModel);
-        }
-
-        public ActionResult TestReply()
-        {
-            
-            return new EmptyResult();
-        }
-
-        [HttpGet]
-        public ActionResult getRecall()
-        {
-            RecallLinesModel = new RecallLinesViewModel();
-            RecallLinesModel.Recalls = new List<RecallLineViewModel> { new RecallLineViewModel { PatientName = "Random", MedecineName = "Random", Selected = false },
-            new RecallLineViewModel { PatientName = "Random", MedecineName = "Random", Selected = true }, new RecallLineViewModel { PatientName = "Random", MedecineName = "Random", Selected = false },
-            new RecallLineViewModel { PatientName = "Random", MedecineName = "Random", Selected = true }, new RecallLineViewModel { PatientName = "Random", MedecineName = "Random", Selected = false },
-            new RecallLineViewModel { PatientName = "Random", MedecineName = "Random", Selected = false }, new RecallLineViewModel { PatientName = "Random", MedecineName = "Random", Selected = false }};
-
-            return PartialView("RecallsPartialView", RecallLinesModel);
         }
 
         #region Helpers

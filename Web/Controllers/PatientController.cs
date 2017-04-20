@@ -61,10 +61,10 @@ namespace Web.Controllers
                 {
                     pickupManager.confirmRefill(retrievedPickup.PickupId);
                     var appmember = await UserManager.FindByNameAsync(retrievedPickup.PatientName);
-                    appmember.CommunicationType = model.CommunicationType;
-
+                    
                     if (appmember != null)
                     {
+                        appmember.CommunicationType = model.CommunicationType;
                         await UserManager.UpdateAsync(appmember);
                     }
                 }

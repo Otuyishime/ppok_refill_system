@@ -1,0 +1,65 @@
+﻿@model List<Web.Models.RecallLineViewModel>
+
+@using (Ajax.BeginForm("sendRecalls", "Home", null, new AjaxOptions { HttpMethod = "POST" }))
+{
+    <div class="row">
+        <div class="col-md-offset-2 col-md-8">
+            <div class="panel panel-default" id="pending-refills-panel">
+                <div class="panel-heading">
+                    <p>
+                        <strong>Recalls</strong>
+                    </p>
+                </div>
+                <div class="panel-body">
+                    <p>
+                        <span class="pull-left">
+                            <input class="form-control btn btn-success btn-sm" type="submit" value="Send recall messages" id="send-pickups-button" />
+                        </span>
+                        <span class="pull-right">
+                            <input type="text" class="form-control input-sm" placeholder="Search recall" id="pending_refills_table_Search" style="border-bottom-color:black" />
+                        </span>
+                    </p>
+                </div>
+                <div class="panel-footer" id="refills-panel-footer">
+                    @if (Model.Count() == 0)
+                    {
+                        <p>No recalls to display ...</p>
+                    }
+                    else
+                    {
+                        <table id="pending-refills-table" class="table dt-responsive wrap" cellspacing="3">
+                            <thead>
+                                <tr>
+                                    <th class="action">
+                                    </th>
+                                    <th>Name</th>
+                                    <th>Medecine</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < Model.Count(); i++)
+                                {
+                                    <tr>
+                                        <td name="IsSelected">
+                                            @Html.CheckBoxFor(m => m[i].IsSelected, new { @class = "refill-line-checkbox" })
+                                        </td>
+                                        <td name="PatientName">
+                                            <strong>
+                                                @Html.HiddenFor(m => m[i].PatientName)
+                                                @Html.DisplayFor(m => m[i].PatientName)
+                                            </strong>
+                                        </td>
+                                        <td name="MedecineName">
+                                            @Html.HiddenFor(m => m[i].MedecineName)
+                                            @Html.DisplayFor(m => m[i].MedecineName)
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}

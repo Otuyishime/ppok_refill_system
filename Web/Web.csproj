@@ -587,6 +587,8 @@
     <None Include="Service References\PPOK_System_Service\PPOK_Refill_System_Service.wsdl" />
     <Content Include="Views\Patient\Index.cshtml" />
     <Content Include="Views\Patient\UnSubscribe.cshtml" />
+    <Content Include="Views\Home\SendRecalls.cshtml" />
+    <Content Include="Views\Home\ImportRecalls.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
