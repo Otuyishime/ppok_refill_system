@@ -69,7 +69,7 @@ namespace Web.Models
                     subject: "PPOK Refill System: Refill Notification",
                     body: "Please confirm your refill by clicking <a href=\"" + callbackUrl + "\">here</a><br />Or" +
                     " click on the copy the following link on the browser: " + HttpUtility.HtmlEncode(callbackUrl) +
-                    "<br /> Use the following code to access the confirmation page: <h3>" + HttpUtility.HtmlEncode(code) + "</h4>" +
+                    "<br /> Use the following code to access the confirmation page: <h3>" + HttpUtility.HtmlEncode(code) + "</h3>" +
                     "To unsubscribe, click here " + "<a href=\"" + HttpUtility.HtmlEncode(unSubscribeCallBack) + "\">unsubscribe</a>");
             }
 

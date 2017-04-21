@@ -240,24 +240,30 @@ namespace Web.Controllers
                             
                             // Need to add medecine as well
                             var app_member = await UserManager.FindByIdAsync(data.pId);
-                            // Prepare a callback URL
-                            string code = "CHECKING123";
-                            var callbackUrl = Url.Action("Index", "Patient", routeValues: new { patientName = app_member.UserName}, protocol: Request.Url.Scheme);
-                            var unSubscribeCallBack = Url.Action("UnSubscribe", "Patient", routeValues: new { patientName = app_member.UserName }, protocol: Request.Url.Scheme);
-                            bool done = await msgHelper.SendRefillMessageAsync(UserManager, 
-                                app_member, callbackUrl, 
-                                unSubscribeCallBack, code, data.MedicineName);
-                            if (done)
-                            {
-                                var pickupMnger = new PickUpsDBManager();
-                                var pickup = new PickUp();
-                                pickup.GuidRand = code;
-                                pickup.IsPickUpReady = false;
-                                pickup.PatientName = app_member.UserName;
-                                pickup.MedicineName = data.MedicineName;
-                                pickup.PatientId = app_member.Id;
 
-                                pickupMnger.createPickUp(pickup);
+                            if (app_member != null)
+                            {
+                                // Generate random 8 chars alpha-numeric string
+                                string code = Convert.ToBase64String(Guid.NewGuid().ToByteArray()).Substring(0, 10);
+
+                                // Prepare a callback URL
+                                var callbackUrl = Url.Action("Index", "Patient", routeValues: new { patientName = app_member.UserName }, protocol: Request.Url.Scheme);
+                                var unSubscribeCallBack = Url.Action("UnSubscribe", "Patient", routeValues: new { patientName = app_member.UserName }, protocol: Request.Url.Scheme);
+                                bool done = await msgHelper.SendRefillMessageAsync(UserManager,
+                                    app_member, callbackUrl,
+                                    unSubscribeCallBack, code, data.MedicineName);
+                                if (done)
+                                {
+                                    var pickupMnger = new PickUpsDBManager();
+                                    var pickup = new PickUp();
+                                    pickup.GuidRand = code;
+                                    pickup.IsPickUpReady = false;
+                                    pickup.PatientName = app_member.UserName;
+                                    pickup.MedicineName = data.MedicineName;
+                                    pickup.PatientId = app_member.Id;
+
+                                    pickupMnger.createPickUp(pickup);
+                                } 
                             }
                         }
                     }
@@ -288,9 +294,12 @@ namespace Web.Controllers
                             // Need to add medecine as well
                             var app_member = await UserManager.FindByNameAsync(data.PatientName);
 
-                            // Prepare a callback URL
-                            var unSubscribeCallBack = Url.Action("UnSubscribe", "Patient", routeValues: new { patientName = app_member.UserName }, protocol: Request.Url.Scheme);
-                            await msgHelper.SendRecallMessageAsync(UserManager, app_member, unSubscribeCallBack, data.MedicineName);
+                            if (app_member != null)
+                            {
+                                // Prepare a callback URL
+                                var unSubscribeCallBack = Url.Action("UnSubscribe", "Patient", routeValues: new { patientName = app_member.UserName }, protocol: Request.Url.Scheme);
+                                await msgHelper.SendRecallMessageAsync(UserManager, app_member, unSubscribeCallBack, data.MedicineName);
+                            }
                         }
                     }
                 }
@@ -319,14 +328,18 @@ namespace Web.Controllers
 
                             // Need to add medecine as well
                             var app_member = await UserManager.FindByNameAsync(data.PatientName);
-
-                            // Prepare a callback URL
-                            var unSubscribeCallBack = Url.Action("UnSubscribe", "Patient", routeValues: new { patientName = app_member.UserName }, protocol: Request.Url.Scheme);
-                            bool done = await msgHelper.SendPickUpMessageAsync(UserManager, app_member, unSubscribeCallBack, data.MedicineName);
-                            if (done)
+                            
+                            if (app_member != null)
                             {
-                                var pickupMnger = new PickUpsDBManager();
-                                pickupMnger.deletePickUp(data.pId);
+                                // Prepare a callback URL
+                                var unSubscribeCallBack = Url.Action("UnSubscribe", "Patient", routeValues: new { patientName = app_member.UserName }, protocol: Request.Url.Scheme);
+
+                                bool done = await msgHelper.SendPickUpMessageAsync(UserManager, app_member, unSubscribeCallBack, data.MedicineName);
+                                if (done)
+                                {
+                                    var pickupMnger = new PickUpsDBManager();
+                                    pickupMnger.deletePickUp(data.pId);
+                                } 
                             }
                         }
                     }
